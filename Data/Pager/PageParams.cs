@@ -9,7 +9,7 @@ namespace Data.Pager
     {
         const int MaxPageSize = 50;
         public int PageNumber { get; set; } = 1;
-        private int _PageSize = 6;
+        private int _PageSize = 12;
         public int PageSize
         {
             get
@@ -22,5 +22,9 @@ namespace Data.Pager
                 _PageSize = (value > MaxPageSize)? MaxPageSize : value;
             }
         }
+
+        public string Sort { get; set; }
+        public int? BrandId { get; set; }
+        public int? CatId { get; set; }
     }
 }

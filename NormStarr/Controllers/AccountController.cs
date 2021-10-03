@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.DTOS;
+using NormStarr.ErrorHandling;
 using NormStarr.Extensions;
 
 namespace NormStarr.Controllers
@@ -45,7 +46,7 @@ namespace NormStarr.Controllers
             if (await UserExist(registerDTO.Email)) return BadRequest("Emaill already exist!");
             var mappedUser = _mapper.Map<RegisterDTO, RegisterModel>(registerDTO);
             var User = await _appRepo.SignUp(mappedUser);
-            if (!User.Succeeded) return BadRequest(User);
+            if (!User.Succeeded) return BadRequest(new ApiErrorResponse(400));
             return Ok(User);
         }
 
@@ -54,7 +55,7 @@ namespace NormStarr.Controllers
         {
             var mappedUser = _mapper.Map<LoginDTO, LoginModel>(loginModel);
             var logUser = await _appRepo.Login(mappedUser);
-            if (logUser == null) return BadRequest();
+            if (logUser == null) return BadRequest(new ApiErrorResponse(404));
             return Ok(logUser);
         }
         

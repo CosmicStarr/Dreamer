@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210928172910_addUpdate")]
+    partial class addUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,43 +261,6 @@ namespace Data.Migrations
                     b.ToTable("GetCategories");
                 });
 
-            modelBuilder.Entity("Models.Orders.ActualOrder", b =>
-                {
-                    b.Property<int>("ActualOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("OrderDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("PaymentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ShippingAddressAddressId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SpeaiclDeliveryDeliveryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ActualOrderId");
-
-                    b.HasIndex("ShippingAddressAddressId");
-
-                    b.HasIndex("SpeaiclDeliveryDeliveryId");
-
-                    b.ToTable("GetActualOrders");
-                });
-
             modelBuilder.Entity("Models.Orders.Address", b =>
                 {
                     b.Property<int>("AddressId")
@@ -324,59 +289,6 @@ namespace Data.Migrations
                     b.HasKey("AddressId");
 
                     b.ToTable("GetAddresses");
-                });
-
-            modelBuilder.Entity("Models.Orders.DeliveryMethods", b =>
-                {
-                    b.Property<int>("DeliveryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("DeliveryTime")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("DeliveryId");
-
-                    b.ToTable("GetDeliveryMethods");
-                });
-
-            modelBuilder.Entity("Models.Orders.OrderedItems", b =>
-                {
-                    b.Property<int>("ItemsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ActualOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ItemsId");
-
-                    b.HasIndex("ActualOrderId");
-
-                    b.ToTable("GetOrderedItems");
                 });
 
             modelBuilder.Entity("Models.Products", b =>
@@ -482,28 +394,6 @@ namespace Data.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("Models.Orders.ActualOrder", b =>
-                {
-                    b.HasOne("Models.Orders.Address", "ShippingAddress")
-                        .WithMany()
-                        .HasForeignKey("ShippingAddressAddressId");
-
-                    b.HasOne("Models.Orders.DeliveryMethods", "SpeaiclDelivery")
-                        .WithMany()
-                        .HasForeignKey("SpeaiclDeliveryDeliveryId");
-
-                    b.Navigation("ShippingAddress");
-
-                    b.Navigation("SpeaiclDelivery");
-                });
-
-            modelBuilder.Entity("Models.Orders.OrderedItems", b =>
-                {
-                    b.HasOne("Models.Orders.ActualOrder", null)
-                        .WithMany("OrderedItems")
-                        .HasForeignKey("ActualOrderId");
-                });
-
             modelBuilder.Entity("Models.Products", b =>
                 {
                     b.HasOne("Models.Brand", "Brand")
@@ -517,11 +407,6 @@ namespace Data.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Models.Orders.ActualOrder", b =>
-                {
-                    b.Navigation("OrderedItems");
                 });
 #pragma warning restore 612, 618
         }

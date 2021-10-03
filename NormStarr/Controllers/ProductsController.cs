@@ -48,13 +48,41 @@ namespace NormStarr.Controllers
 
         [HttpGet]
         // [Authorize(Policy="AdminDevelopers")]
-        public async Task<ActionResult<IEnumerable<ProductsDTO>>> GetProductsAsync([FromQuery]PageParams Param)
+        public async Task<ActionResult<IEnumerable<ProductsDTO>>> GetProductsAsync([FromQuery]PageParams Param,string Search)
         {
+            
             var Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand");
+            if(!string.IsNullOrEmpty(Param.Sort))
+            {
+                switch (Param.Sort)
+                {
+                    case "priceAsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x=>x.Price),"Category,Brand");
+                    break;
+                    case "priceDsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderByDescending(x=>x.Price),"Category,Brand");
+                    break;
+                    default: Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand"); break;
+                }
+            }
+            if(!string.IsNullOrEmpty(Search))
+            {
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Name.ToLower().Contains(Search),x =>x.OrderBy(x =>x.Name),"Category,Brand");
+            }
+            if(Param.BrandId.HasValue)
+            {
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Brand.BrandId == Param.BrandId,o =>o.OrderBy(x =>x.Name),"Category,Brand"); 
+            }
+            if(Param.CatId.HasValue)
+            {
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Category.CatId == Param.CatId,o =>o.OrderBy(x=>x.Name),"Category,Brand");
+            }
+            if(Param.BrandId.HasValue && Param.CatId.HasValue)
+            {
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Brand.BrandId == Param.BrandId & x.Category.CatId == Param.CatId,o =>o.OrderBy(x =>x.Name),"Category,Brand");
+            }
             //PageSize is the amout of items per page!
             Response.AddPaginationHeader(Data.CurrentPage,Data.PageSize,Data.TotalCount,Data.TotalPages);
             var newData = _mapper.Map<PagerList<Products>,PagerList<ProductsDTO>>(Data);
-            return Ok(Data);
+            return Ok(newData);
         }
 
         [HttpGet("Brand")]

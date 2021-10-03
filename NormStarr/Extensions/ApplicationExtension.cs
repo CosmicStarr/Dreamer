@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using NormStarr.EmailSenderServices;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using StackExchange.Redis;
 
 namespace NormStarr.Extensions
 {
@@ -19,6 +20,7 @@ namespace NormStarr.Extensions
     {
         public static IServiceCollection AppService(this IServiceCollection services, IConfiguration config)
         {
+            services.AddScoped<IShoppingCartRepository,ShoppingCartRepository>();
             services.AddSingleton<IMailJetEmailSender,MailJetSender>();
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IApplicationUserRepo,ApplicationUserRepo>();
@@ -27,6 +29,11 @@ namespace NormStarr.Extensions
             services.AddDbContext<ApplicationDbContext>(o =>
             {
                 o.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            });
+            services.AddSingleton<IConnectionMultiplexer>(r =>
+            {
+                var configuration = ConfigurationOptions.Parse(config.GetConnectionString("Redis"),true);
+                return ConnectionMultiplexer.Connect(configuration);
             });
             services.AddIdentity<AppUser,IdentityRole>(opt =>
             {
