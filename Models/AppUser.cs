@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Models.Orders;
@@ -10,6 +11,6 @@ namespace Models
         public string LastName { get; set; }
         [NotMapped]
         public string FullName { get { return FirstName + " " + LastName;} }
-        public Address Address { get; set; }
+        public Address Addresses {get; set;}
     }
 }

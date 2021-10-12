@@ -11,13 +11,13 @@ namespace NormStarr.ErrorHandling
         {
             
         }
-        public ApiErrorResponse(int? statusCode,string message = null)
+        public ApiErrorResponse(int statusCode,string message = null)
         {   
             statusCode = StatusCodes;
             message = Message ?? ErrroMessageResponse(StatusCodes);
         }
 
-        private string ErrroMessageResponse(int? statusCode)
+        private string ErrroMessageResponse(int statusCode)
         {
            return statusCode switch 
            {
@@ -29,7 +29,7 @@ namespace NormStarr.ErrorHandling
            };
         }
 
-        public int? StatusCodes { get; set; }
+        public int StatusCodes { get; set; }
         public string  Message { get; set; }
     }
    

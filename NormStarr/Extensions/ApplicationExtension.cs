@@ -20,6 +20,8 @@ namespace NormStarr.Extensions
     {
         public static IServiceCollection AppService(this IServiceCollection services, IConfiguration config)
         {
+            services.AddScoped<IPaymentService,PaymentService>();
+            services.AddScoped<IOrderRepository,OrderServices>();
             services.AddScoped<IShoppingCartRepository,ShoppingCartRepository>();
             services.AddSingleton<IMailJetEmailSender,MailJetSender>();
             services.AddScoped<ITokenService,TokenService>();
@@ -37,7 +39,7 @@ namespace NormStarr.Extensions
             });
             services.AddIdentity<AppUser,IdentityRole>(opt =>
             {
-                opt.SignIn.RequireConfirmedEmail = true;
+                opt.SignIn.RequireConfirmedEmail = false;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

@@ -7,6 +7,7 @@ using Data.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Models;
+using Models.DTOS;
 
 namespace Data.ClassesForInterfaces
 {
@@ -21,25 +22,26 @@ namespace Data.ClassesForInterfaces
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SecretKey"]));
         }
 
-        public string CreateToken(AppUser User)
+        public string Token(LoginDTO loginModelDTO, IList<string> Roles = null, IList<Claim> claims = null)
         {
-            var claims = new List<Claim>
+            claims.Add(new Claim(JwtRegisteredClaimNames.GivenName,loginModelDTO.Email));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()));
+            foreach (var item in Roles)
             {
-                new Claim(ClaimTypes.Email,User.Email),
-                new Claim(ClaimTypes.GivenName,User.UserName)
-            };
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+                claims.Add(new Claim(ClaimTypes.Role.Remove(0,56),item));
+            }
+            //Secret Key for the Server to Use.
+            var authKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["JWT:SecretKey"]));
+            //Token Description
+            var token = new JwtSecurityToken(
+                    issuer: _config["JWT:VaildIssuer"],
+                    audience: _config["JWT:VaildAudience"],
+                    expires: DateTime.UtcNow.AddDays(1),
+                    claims: claims,
+                    signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha512Signature)
+                );
 
-            var tokenDescription = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = creds,
-                Issuer = _config["Token:Issuer"]
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescription);
-            return tokenHandler.WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

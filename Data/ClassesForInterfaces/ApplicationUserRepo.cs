@@ -53,7 +53,7 @@ namespace Data.ClassesForInterfaces
         //     return User;
         // }
 
-        public async Task<LoginModel> Login(LoginModel loginDTO)
+        public async Task<LoginDTO> Login(LoginDTO loginDTO)
         {
             var user = await _userManager.FindByEmailAsync(loginDTO.Email);
             if(user == null) return null;
@@ -64,14 +64,14 @@ namespace Data.ClassesForInterfaces
             }
             var role = await _userManager.GetRolesAsync(user);
             IList<Claim> Claim = await _userManager.GetClaimsAsync(user); 
+            
             //Who the Application User Claims to be!
-            return new LoginModel
+            return new LoginDTO
             {
                 Email = loginDTO.Email,
                 Password = loginDTO.Password,
                 token = Token(loginDTO, role, Claim)   
             };
-     
         }
 
         // public async Task<IdentityResult> ResetPassword(LoginDTO loginDTO)
@@ -83,7 +83,7 @@ namespace Data.ClassesForInterfaces
         //     return null;
         // }
 
-        public async Task<IdentityResult> SignUp(RegisterModel registerDTO)
+        public async Task<IdentityResult> SignUp(RegisterDTO registerDTO)
         {
 
             if(!await _roleManager.RoleExistsAsync(registerDTO.Role))
@@ -120,14 +120,14 @@ namespace Data.ClassesForInterfaces
                 {
                     role = await _userManager.AddToRoleAsync(user,StaticInfo.CustomerRole);
                 }
-                var claim  = new Claim("JobDeparment",registerDTO.JobDepartment);
+                var claim  = new Claim("JobDepartment",registerDTO.JobDepartment);
                 await _userManager.AddClaimAsync(NewUser,claim);
                 return IdentityResult.Success;
             }
             return IdentityResult.Failed();
         }
 
-        public string Token(LoginModel loginModelDTO, IList<string> Roles, IList<Claim> claims)
+        public string Token(LoginDTO loginModelDTO, IList<string> Roles = null, IList<Claim> claims = null)
         {
             // var authClaims = new List<Claim>
             // {

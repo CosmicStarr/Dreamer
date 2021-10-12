@@ -11,7 +11,12 @@ namespace NormStarr.Extensions
         public async static Task<AppUser> RetrieveEmail(this UserManager<AppUser> Input, ClaimsPrincipal User)
         {
             var currentUser =  User.FindFirstValue(ClaimTypes.Email);
-            return await Input.Users.SingleOrDefaultAsync(x => x.Email == currentUser);
+            return await Input.Users.FirstOrDefaultAsync(x => x.Email == currentUser);
+        }
+
+        public static string RetrieveUserEmail(this ClaimsPrincipal User)
+        {
+            return User.FindFirstValue(ClaimTypes.Email);
         }
     }
 }

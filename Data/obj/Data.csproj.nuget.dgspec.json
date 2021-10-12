@@ -87,6 +87,10 @@
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.2.50, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[39.72.0, )"
             }
           },
           "imports": [

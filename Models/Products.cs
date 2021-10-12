@@ -12,7 +12,6 @@ namespace Models
         public string ImageUrl { get; set; }
         [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
-        public int Amount { get; set; }
         public bool IsOnSale { get; set; }
         public bool IsAvailable { get; set; }
         public Category Category { get; set; }

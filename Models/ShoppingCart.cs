@@ -20,7 +20,7 @@ namespace Models
         }
         [Key]
         public string ShopId { get; set; }
-        public List<CartItemsDTO> ShoppingCartItems { get; set; } = new();
+        public List<CartItems> ShoppingCartItems { get; set; } = new();
         public int? DeliveryId { get; set; }
         [Column(TypeName ="decimal (18,2)")]
         public decimal DeliveryPrice { get; set; }

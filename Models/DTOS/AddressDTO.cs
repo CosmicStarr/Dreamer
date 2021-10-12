@@ -17,6 +17,7 @@ namespace Models.DTOS
         public string State { get; set; }
         [Required]  
         [DataType(DataType.PostalCode)]
-        public string ZipCode { get; set; }   
+        public int ZipCode { get; set; }   
+      
     }
 }

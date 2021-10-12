@@ -158,9 +158,6 @@ namespace Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -213,8 +210,6 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -241,6 +236,36 @@ namespace Data.Migrations
                     b.ToTable("GetBrands");
                 });
 
+            modelBuilder.Entity("Models.CartItems", b =>
+                {
+                    b.Property<int>("CartItemsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal (18,2)");
+
+                    b.HasKey("CartItemsId");
+
+                    b.ToTable("GetCartItems");
+                });
+
             modelBuilder.Entity("Models.Category", b =>
                 {
                     b.Property<int>("CatId")
@@ -257,6 +282,27 @@ namespace Data.Migrations
                     b.HasKey("CatId");
 
                     b.ToTable("GetCategories");
+                });
+
+            modelBuilder.Entity("Models.MappedProducts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductsItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GetMappedProducts");
                 });
 
             modelBuilder.Entity("Models.Orders.ActualOrder", b =>
@@ -303,6 +349,9 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -322,6 +371,10 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressId");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.ToTable("GetAddresses");
                 });
@@ -352,7 +405,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Orders.OrderedItems", b =>
                 {
-                    b.Property<int>("ItemsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -366,13 +419,16 @@ namespace Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ItemsId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ItemsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ActualOrderId");
 
@@ -385,9 +441,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
 
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
@@ -473,15 +526,6 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.AppUser", b =>
-                {
-                    b.HasOne("Models.Orders.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("Models.Orders.ActualOrder", b =>
                 {
                     b.HasOne("Models.Orders.Address", "ShippingAddress")
@@ -495,6 +539,15 @@ namespace Data.Migrations
                     b.Navigation("ShippingAddress");
 
                     b.Navigation("SpeaiclDelivery");
+                });
+
+            modelBuilder.Entity("Models.Orders.Address", b =>
+                {
+                    b.HasOne("Models.AppUser", "AppUser")
+                        .WithOne("Addresses")
+                        .HasForeignKey("Models.Orders.Address", "AppUserId");
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Models.Orders.OrderedItems", b =>
@@ -517,6 +570,11 @@ namespace Data.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Models.AppUser", b =>
+                {
+                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("Models.Orders.ActualOrder", b =>

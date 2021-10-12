@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3qy6vPKAysNE148CFZtQ6TMY1tsn4zth/ghUqZoT49GcttgzCBihCY3YcQXvDj6e6pUiCFw0kbyN3KOB6iyrSg==",
+  "dgSpecHash": "sPtFfe3dV34OIf3QnBqBsYs9iTROIyVzT7a5IqCQ3YIW10FOMJpvvAHEL0BcUJzcwZ4ftWAdZQlQBjatG0Z8vg==",
   "success": true,
   "projectFilePath": "C:\\Users\\admin\\Dreamer\\Data\\Data.csproj",
   "expectedPackageFiles": [
@@ -46,6 +46,7 @@
     "C:\\Users\\admin\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.0\\pipelines.sockets.unofficial.2.2.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\stackexchange.redis\\2.2.50\\stackexchange.redis.2.2.50.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\stripe.net\\39.72.0\\stripe.net.39.72.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",

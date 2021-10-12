@@ -9,5 +9,7 @@ namespace StaticContent
     {
           public const string CustomerRole = "User";
           public const string AdminRole = "Admin";
+
+      
     }
 }

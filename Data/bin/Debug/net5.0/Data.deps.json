@@ -17,7 +17,8 @@
           "Models": "1.0.0",
           "Newtonsoft.Json": "13.0.1",
           "StackExchange.Redis": "2.2.50",
-          "StaticContent": "1.0.0"
+          "StaticContent": "1.0.0",
+          "Stripe.net": "39.72.0"
         },
         "runtime": {
           "Data.dll": {}
@@ -439,6 +440,18 @@
           "lib/net5.0/StackExchange.Redis.dll": {
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.2.50.36290"
+          }
+        }
+      },
+      "Stripe.net/39.72.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "System.Configuration.ConfigurationManager": "5.0.0"
+        },
+        "runtime": {
+          "lib/net5.0/Stripe.net.dll": {
+            "assemblyVersion": "39.72.0.0",
+            "fileVersion": "39.72.0.0"
           }
         }
       },
@@ -1333,6 +1346,13 @@
       "sha512": "sha512-jss1e27GaoI9efYtI+ZVGm2+QYKjFr92n/Jdjs4NY2jf/fFsu8lCNfaZ6tsR5nc5u67htNSRlyNkxFBuD8NVTA==",
       "path": "stackexchange.redis/2.2.50",
       "hashPath": "stackexchange.redis.2.2.50.nupkg.sha512"
+    },
+    "Stripe.net/39.72.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1zSzgdNom5umDS8bO9ozyuw4m0wyg/Ti+5cagdaMd086NzzbXj9PslcrYuU3PEf5o3leb9q22PGAlLzEVbZyFA==",
+      "path": "stripe.net/39.72.0",
+      "hashPath": "stripe.net.39.72.0.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",

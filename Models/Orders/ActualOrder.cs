@@ -16,14 +16,11 @@ namespace Models.Orders
         }
         public ActualOrder(
             IEnumerable<OrderedItems> orderedItems,
-            int actualOrderId, 
-            string email, 
+            string email,
             Address shippingAddress, 
             DeliveryMethods speaiclDelivery, 
-            decimal subtotal, 
-            OrderStatus orderStatus)
+            decimal subtotal)
         {
-            ActualOrderId = actualOrderId;
             Email = email;
             ShippingAddress = shippingAddress;
             SpeaiclDelivery = speaiclDelivery;

@@ -12,6 +12,10 @@ namespace Data
     {
         public void Configure(EntityTypeBuilder<ActualOrder> builder)
         {
+            builder.OwnsOne(o => o.ShippingAddress, a =>
+            {
+                a.WithOwner();
+            });
             builder.Property(s =>s.Status).HasConversion(
                 c => c.ToString(),c => (OrderStatus) Enum.Parse(typeof(OrderStatus),c)
             );
