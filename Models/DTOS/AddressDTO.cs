@@ -18,6 +18,7 @@ namespace Models.DTOS
         [Required]  
         [DataType(DataType.PostalCode)]
         public int ZipCode { get; set; }   
+        public AppUserDTO AppUserDTO { get; set; }
       
     }
 }

@@ -8,7 +8,6 @@ namespace Models.DTOS
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName { get { return FirstName + " " + LastName;} }
-        public ICollection<ActualOrderDTO> Orders { get; set; }
         public AddressDTO Addresses {get; set;}
     }
 }

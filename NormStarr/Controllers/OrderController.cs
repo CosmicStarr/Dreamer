@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Interfaces;
@@ -34,7 +35,7 @@ namespace NormStarr.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<ActualOrderDTO>> GetOrderAsync(int Id)
         {
-            var Email = await _userManager.RetrieveEmail(HttpContext.User);
+            var Email = HttpContext.User.RetrieveUserEmail();
             var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,SpeaiclDelivery,ShippingAddress");
             if(SingleObj == null) return NotFound(new ApiErrorResponse(404));
             return Ok(_mapper.Map<ActualOrder,ActualOrderDTO>(SingleObj));
@@ -45,8 +46,8 @@ namespace NormStarr.Controllers
         // [Authorize]
         public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetActualOrders()
         {
-            var Email = await _userManager.RetrieveEmail(HttpContext.User);
-            var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.Email == Email.Email,x =>x.OrderByDescending(x =>x.OrderDate)
+            var Email = HttpContext.User.RetrieveUserEmail();
+            var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.Email == Email,x =>x.OrderByDescending(x =>x.OrderDate)
             ,"OrderedItems,SpeaiclDelivery,ShippingAddress");
             return Ok(_mapper.Map<IEnumerable<ActualOrder>,IEnumerable<ActualOrderDTO>>(Orders));
         }
@@ -58,6 +59,7 @@ namespace NormStarr.Controllers
         }
    
         [HttpPost]
+        // [Authorize]
         public async Task<ActionResult<ActualOrder>> CreateOrder(OrderDTO orderDTO)
         {
             var Email = HttpContext.User.RetrieveUserEmail();

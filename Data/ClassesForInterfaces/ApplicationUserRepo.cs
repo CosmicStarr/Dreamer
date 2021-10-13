@@ -66,6 +66,11 @@ namespace Data.ClassesForInterfaces
             IList<Claim> Claim = await _userManager.GetClaimsAsync(user); 
             
             //Who the Application User Claims to be!
+            // return Token(new LoginDTO 
+            // {
+            //     Email = loginDTO.Email,
+            //     Password = loginDTO.Password
+            // },role,Claim);
             return new LoginDTO
             {
                 Email = loginDTO.Email,
@@ -135,6 +140,7 @@ namespace Data.ClassesForInterfaces
             //     new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             // };
             claims.Add(new Claim(JwtRegisteredClaimNames.GivenName,loginModelDTO.Email));
+            claims.Add(new Claim(ClaimTypes.Email,loginModelDTO.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()));
             foreach (var item in Roles)
             {

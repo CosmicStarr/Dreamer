@@ -17,7 +17,8 @@ namespace NormStarr.AutoMapperProfiles
                                                    .ForMember(x => x.ActualOrderId,o => o.MapFrom(s => s.ActualOrderId));                               
             CreateMap<CartItems,CartItemsDTO>();
             CreateMap<ConfirmEmailModel,ConfirmEmailModelDTO>();
-            CreateMap<Address,AddressDTO>().ReverseMap().ForMember(d => d.AddressId,m => m.MapFrom(s =>s.AddressId));
+            CreateMap<Address,AddressDTO>().ReverseMap().ForMember(d => d.AddressId,m => m.MapFrom(s =>s.AddressId))
+                                                        .ForMember(x => x.AppUserId,o => o.MapFrom(s => s.AppUserDTO));
             CreateMap<RegisterModel,RegisterDTO>();
             CreateMap<LoginModel,LoginDTO>().ReverseMap();
             CreateMap<Brand,BrandDTO>().ForMember(x =>x.Name,o =>o.MapFrom(s => s.Name));

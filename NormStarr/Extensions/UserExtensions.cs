@@ -16,7 +16,7 @@ namespace NormStarr.Extensions
 
         public static string RetrieveUserEmail(this ClaimsPrincipal User)
         {
-            return User.FindFirstValue(ClaimTypes.Email);
+            return User.FindFirstValue(ClaimTypes.GivenName);
         }
     }
 }
