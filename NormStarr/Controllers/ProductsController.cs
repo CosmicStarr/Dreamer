@@ -47,7 +47,7 @@ namespace NormStarr.Controllers
         }
 
         [HttpGet]
-        // [Authorize(Policy="AdminDevelopers")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ProductsDTO>>> GetProductsAsync([FromQuery]PageParams Param,string Search)
         {
             

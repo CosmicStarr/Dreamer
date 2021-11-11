@@ -15,13 +15,13 @@ namespace NormStarr.MiddleWare
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleWare> _logger;
-        private readonly IHostEnvironment _host;
+        private readonly IHostEnvironment _env;
 
         public ExceptionMiddleWare(RequestDelegate next, ILogger<ExceptionMiddleWare> logger, IHostEnvironment host)
         {
             _next = next;
             _logger = logger;
-            _host = host;
+            _env = host;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -37,7 +37,7 @@ namespace NormStarr.MiddleWare
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                var response = _host.IsDevelopment()
+                var response = _env.IsDevelopment()
                     ? new ApiExceptionReponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
                     : new ApiExceptionReponse((int)HttpStatusCode.InternalServerError);
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };

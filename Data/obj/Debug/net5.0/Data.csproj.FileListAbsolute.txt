@@ -11,7 +11,6 @@ C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.GeneratedMSBuildEditorConfig.e
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.AssemblyInfoInputs.cache
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.AssemblyInfo.cs
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.csproj.CoreCompileInputs.cache
-C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.csproj.CopyComplete
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.dll
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\ref\Data.dll
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.pdb

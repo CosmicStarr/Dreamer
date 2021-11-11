@@ -26,6 +26,7 @@ namespace Data.ClassesForInterfaces
         {
             StripeConfiguration.ApiKey = _config["Stripe:SecretKey"];
             var Cart = await _shoppingCartRepository.GetCartAsync(CartId);
+            if(Cart == null) return null;
             var shippingPrice = 0m;
             if(Cart.DeliveryId.HasValue)
             {
@@ -65,6 +66,26 @@ namespace Data.ClassesForInterfaces
 
             await _shoppingCartRepository.UpdateCartAsync(Cart);
             return Cart;
+        }
+
+        public async Task<ActualOrder> UpdatePaymentFailed(string paymentId)
+        {
+            var Order = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.PaymentId == paymentId);
+            if(Order == null) return null;
+            Order.Status = OrderStatus.PaymentFailed;
+            _unitOfWork.Repository<ActualOrder>().Update(Order);
+            await _unitOfWork.Complete();
+            return Order;
+        }
+
+        public async Task<ActualOrder> UpdatePaymentSucceeded(string paymentId)
+        {
+            var Order = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.PaymentId == paymentId);
+            if(Order == null) return null;
+            Order.Status = OrderStatus.PaymentRecevied;
+            _unitOfWork.Repository<ActualOrder>().Update(Order);
+            await _unitOfWork.Complete();
+            return Order;
         }
     }
 }

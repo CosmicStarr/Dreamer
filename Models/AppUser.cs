@@ -11,6 +11,6 @@ namespace Models
         public string LastName { get; set; }
         [NotMapped]
         public string FullName { get { return FirstName + " " + LastName;} }
-        public Address Addresses {get; set;}
+        public virtual UserAddress Addresses {get; set;}
     }
 }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Orders
 {
@@ -16,8 +15,7 @@ namespace Models.Orders
             City = city;
             ZipCode = zipcode;
         }
-        [Key]
-        public int AddressId { get; set; }   
+ 
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string  Street { get; set; }
@@ -25,7 +23,5 @@ namespace Models.Orders
         public string State { get; set; }
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }  
-        public string AppUserId { get; set; }
-        public AppUser AppUser { get; set; }
     }
 }

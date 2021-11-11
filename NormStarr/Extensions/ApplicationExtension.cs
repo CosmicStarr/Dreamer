@@ -11,8 +11,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using NormStarr.EmailSenderServices;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using StackExchange.Redis;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using NormStarr.ErrorHandling;
+
 
 namespace NormStarr.Extensions
 {
@@ -20,6 +23,8 @@ namespace NormStarr.Extensions
     {
         public static IServiceCollection AppService(this IServiceCollection services, IConfiguration config)
         {
+            services.Configure<CloudinaryPhotos>(config.GetSection("CloudinaryPhotos"));
+            services.AddScoped<IPhotoServices,PhotoService>();
             services.AddScoped<IPaymentService,PaymentService>();
             services.AddScoped<IOrderRepository,OrderServices>();
             services.AddScoped<IShoppingCartRepository,ShoppingCartRepository>();
@@ -62,12 +67,28 @@ namespace NormStarr.Extensions
 
                 };
             });
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+                o.InvalidModelStateResponseFactory = ActionContext =>
+                {
+                    var errors = ActionContext.ModelState
+                    .Where(e =>e.Value.Errors.Count > 0)
+                    .SelectMany(e => e.Value.Errors)
+                    .Select(e => e.ErrorMessage).ToList();
+                    var errorResponse = new ApiValidationResponse
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("ManagerDevelopers", o =>
                 {
                     o.RequireClaim("JobDepartment","Developer");
-                    o.RequireRole("Manager");
+                    o.RequireRole(new[] {"Admin,Manager"});
                 });
                 opt.AddPolicy("AdminDevelopers", o =>
                 {
@@ -75,7 +96,6 @@ namespace NormStarr.Extensions
                     o.RequireRole("Admin");
                 });
             });
-     
             return services;   
         }
     }

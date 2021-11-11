@@ -7,9 +7,10 @@ namespace StaticContent
 {
     public static class StaticInfo
     {
-          public const string CustomerRole = "User";
+          public const string CustomerRole = "Customer";
           public const string AdminRole = "Admin";
-
+          public const string ManagerRole = "Manager";
+          public const string Employee = "Employee";
       
     }
 }

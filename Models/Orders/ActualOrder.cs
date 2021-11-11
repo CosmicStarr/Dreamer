@@ -19,13 +19,15 @@ namespace Models.Orders
             string email,
             Address shippingAddress, 
             DeliveryMethods speaiclDelivery, 
-            decimal subtotal)
+            decimal subtotal,
+            string paymentIntentId)
         {
             Email = email;
             ShippingAddress = shippingAddress;
             SpeaiclDelivery = speaiclDelivery;
             Subtotal = subtotal;
             OrderedItems = orderedItems;
+            PaymentId = paymentIntentId;
         }
 
         [Key]

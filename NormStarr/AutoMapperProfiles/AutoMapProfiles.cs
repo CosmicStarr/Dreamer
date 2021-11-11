@@ -10,15 +10,18 @@ namespace NormStarr.AutoMapperProfiles
     {
         public AutoMapProfiles()
         {
+            
+            CreateMap<ForgotPassword,ForgotPasswordDTO>().ReverseMap();
+            CreateMap<ResetPassword,ResetPasswordDTO>().ReverseMap();
             CreateMap<AppUser,AppUserDTO>();
             CreateMap<OrderedItems,OrderedItemsDTO>();
             CreateMap<ActualOrder,ActualOrderDTO>().ForMember(x =>x.SpeaiclDelivery,o =>o.MapFrom(s =>s.SpeaiclDelivery.DeliveryId))
                                                    .ForMember(x => x.Total,o =>o.MapFrom(s =>s.GetTotal()))
-                                                   .ForMember(x => x.ActualOrderId,o => o.MapFrom(s => s.ActualOrderId));                               
+                                                   .ForMember(x => x.ActualOrderId,o => o.MapFrom(s => s.ActualOrderId));                                                                                
             CreateMap<CartItems,CartItemsDTO>();
             CreateMap<ConfirmEmailModel,ConfirmEmailModelDTO>();
-            CreateMap<Address,AddressDTO>().ReverseMap().ForMember(d => d.AddressId,m => m.MapFrom(s =>s.AddressId))
-                                                        .ForMember(x => x.AppUserId,o => o.MapFrom(s => s.AppUserDTO));
+            CreateMap<UserAddress,UserAddressDTO>().ReverseMap().ForMember(d => d.UserAddressId,m => m.MapFrom(s =>s.UserAddressId));
+            CreateMap<UserAddressDTO,Address>();                                        
             CreateMap<RegisterModel,RegisterDTO>();
             CreateMap<LoginModel,LoginDTO>().ReverseMap();
             CreateMap<Brand,BrandDTO>().ForMember(x =>x.Name,o =>o.MapFrom(s => s.Name));

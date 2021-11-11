@@ -16,7 +16,8 @@ namespace Data
             {
                 a.WithOwner();
             });
-            builder.Property(s =>s.Status).HasConversion(
+            builder.Property(s =>s.Status)
+                .HasConversion(
                 c => c.ToString(),c => (OrderStatus) Enum.Parse(typeof(OrderStatus),c)
             );
             builder.HasMany(o=>o.OrderedItems).WithOne().OnDelete(DeleteBehavior.Cascade);

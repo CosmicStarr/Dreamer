@@ -10,12 +10,12 @@ namespace Data.Interfaces
 {
     public interface IApplicationUserRepo
     {
-        Task<IdentityResult> SignUp(RegisterDTO registerDTO);
+        Task<LoginDTO> SignUp(RegisterDTO registerDTO);
         Task<LoginDTO> Login(LoginDTO loginDTO);
-        // Task<IdentityResult> ResetPassword(LoginDTO loginDTO);
-        // Task<AppUser> ForgotPassword(LoginDTO loginDTO);
+        Task<IdentityResult> ResetPassword(ResetPassword loginDTO);
+        Task<IdentityResult> ForgotPassword(ForgotPassword loginDTO);
         Task<IdentityResult> ConfirmEmail(ConfirmEmailModelDTO confirmEmailModelDTO);
-        string Token(LoginDTO loginModelDTO, IList<string> Roles, IList<Claim> claims);
+        string LoginToken(LoginDTO loginModelDTO, IList<string> Roles, IList<Claim> claims);
 
     }
 }

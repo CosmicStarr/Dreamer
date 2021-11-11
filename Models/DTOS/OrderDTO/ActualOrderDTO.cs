@@ -9,7 +9,6 @@ namespace Models.DTOS.OrderDTO
     public class ActualOrderDTO
     {
         public int ActualOrderId { get; set; }
-        public string AppUser { get; set; }
         public string Email { get; set; }
         public DateTimeOffset OrderDate { get; set; } 
         public AddressDTO ShippingAddress { get; set; }

@@ -4,11 +4,11 @@ using NormStarr.ErrorHandling;
 
 namespace NormStarr.Controllers
 {
-    [Route("errors/{code}")]
+    [Route("/errors/{code}")]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class ErrorHandlingController:BaseController
+    public class ErrorController:BaseController
     {
-        public IActionResult ErrorsAgain(int code)
+        public IActionResult Error(int code)
         {
             return new OkObjectResult(new ApiErrorResponse(code));
         }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211012183434_update1")]
-    partial class update1
+    [Migration("20211111180512_update15")]
+    partial class update15
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -293,14 +293,14 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductsItemId")
                         .HasColumnType("int");
+
+                    b.Property<string>("photos")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -323,62 +323,21 @@ namespace Data.Migrations
                     b.Property<string>("PaymentId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShippingAddressAddressId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SpeaiclDeliveryDeliveryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ActualOrderId");
 
-                    b.HasIndex("ShippingAddressAddressId");
-
                     b.HasIndex("SpeaiclDeliveryDeliveryId");
 
                     b.ToTable("GetActualOrders");
-                });
-
-            modelBuilder.Entity("Models.Orders.Address", b =>
-                {
-                    b.Property<int>("AddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AddressId");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique()
-                        .HasFilter("[AppUserId] IS NOT NULL");
-
-                    b.ToTable("GetAddresses");
                 });
 
             modelBuilder.Entity("Models.Orders.DeliveryMethods", b =>
@@ -437,6 +396,24 @@ namespace Data.Migrations
                     b.ToTable("GetOrderedItems");
                 });
 
+            modelBuilder.Entity("Models.Photos", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("GetPhotos");
+                });
+
             modelBuilder.Entity("Models.Products", b =>
                 {
                     b.Property<int>("ProductId")
@@ -475,6 +452,43 @@ namespace Data.Migrations
                     b.HasIndex("CategoryCatId");
 
                     b.ToTable("GetProducts");
+                });
+
+            modelBuilder.Entity("Models.UserAddress", b =>
+                {
+                    b.Property<int>("UserAddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserAddressId");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
+
+                    b.ToTable("GetUserAddresses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -530,33 +544,54 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Orders.ActualOrder", b =>
                 {
-                    b.HasOne("Models.Orders.Address", "ShippingAddress")
-                        .WithMany()
-                        .HasForeignKey("ShippingAddressAddressId");
-
                     b.HasOne("Models.Orders.DeliveryMethods", "SpeaiclDelivery")
                         .WithMany()
                         .HasForeignKey("SpeaiclDeliveryDeliveryId");
+
+                    b.OwnsOne("Models.Orders.Address", "ShippingAddress", b1 =>
+                        {
+                            b1.Property<int>("ActualOrderId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("FirstName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("LastName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Street")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ZipCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ActualOrderId");
+
+                            b1.ToTable("GetActualOrders");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActualOrderId");
+                        });
 
                     b.Navigation("ShippingAddress");
 
                     b.Navigation("SpeaiclDelivery");
                 });
 
-            modelBuilder.Entity("Models.Orders.Address", b =>
-                {
-                    b.HasOne("Models.AppUser", "AppUser")
-                        .WithOne("Addresses")
-                        .HasForeignKey("Models.Orders.Address", "AppUserId");
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("Models.Orders.OrderedItems", b =>
                 {
                     b.HasOne("Models.Orders.ActualOrder", null)
                         .WithMany("OrderedItems")
-                        .HasForeignKey("ActualOrderId");
+                        .HasForeignKey("ActualOrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Models.Products", b =>
@@ -572,6 +607,15 @@ namespace Data.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Models.UserAddress", b =>
+                {
+                    b.HasOne("Models.AppUser", "AppUser")
+                        .WithOne("Addresses")
+                        .HasForeignKey("Models.UserAddress", "AppUserId");
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Models.AppUser", b =>

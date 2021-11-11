@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Data.Interfaces;
 using Data.Pager;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.ClassesForInterfaces
@@ -87,6 +88,8 @@ namespace Data.ClassesForInterfaces
             }
             return await query.FirstOrDefaultAsync();
         }
+
+
 
         public void Remove(T entity)
         {

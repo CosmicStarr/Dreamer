@@ -9,7 +9,7 @@ namespace NormStarr.ErrorHandling
     {
         public ApiExceptionReponse(int statusCode, string message = null, string details = null) : base(statusCode, message)
         {
-            details = Details;
+            Details = details;
         }
 
         public string Details { get; set; }

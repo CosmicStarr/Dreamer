@@ -28,22 +28,7 @@ namespace NormStarr
         {
             services.AppService(Configuration);
             services.AddControllers();
-            services.Configure<ApiBehaviorOptions>(o =>
-            {
-                o.InvalidModelStateResponseFactory = ActionContext =>
-                {
-                    var errors = ActionContext.ModelState
-                    .Where(e =>e.Value.Errors.Count > 0)
-                    .SelectMany(e => e.Value.Errors)
-                    .Select(e => e.ErrorMessage).ToArray();
-                    var errorResponse = new ApiValidationResponse
-                    {
-                        Errors = errors
-                    };
-
-                    return new BadRequestObjectResult(errorResponse);
-                };
-            });
+  
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NormStarr", Version = "v1" });
@@ -61,14 +46,15 @@ namespace NormStarr
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             
+            app.UseMiddleware<ExceptionMiddleWare>();
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
             if (env.IsDevelopment())
             {
-                app.UseMiddleware<ExceptionMiddleWare>();
-                app.UseDeveloperExceptionPage();
+               
+                // app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NormStarr v1"));
             }
-            app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
             app.UseRouting(); 
             app.UseStaticFiles();

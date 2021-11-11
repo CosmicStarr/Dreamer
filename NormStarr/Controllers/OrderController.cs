@@ -37,13 +37,13 @@ namespace NormStarr.Controllers
         {
             var Email = HttpContext.User.RetrieveUserEmail();
             var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,SpeaiclDelivery,ShippingAddress");
-            if(SingleObj == null) return NotFound(new ApiErrorResponse(404));
+            if(SingleObj == null) return NotFound(new ApiErrorResponse(404,"What you're looking for does not exist!"));
             return Ok(_mapper.Map<ActualOrder,ActualOrderDTO>(SingleObj));
         }
         
      
         [HttpGet]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetActualOrders()
         {
             var Email = HttpContext.User.RetrieveUserEmail();
@@ -52,19 +52,19 @@ namespace NormStarr.Controllers
             return Ok(_mapper.Map<IEnumerable<ActualOrder>,IEnumerable<ActualOrderDTO>>(Orders));
         }
 
-        [HttpGet("delivery")]
+        
+        [HttpGet("deli")]
         public async Task<ActionResult<IEnumerable<DeliveryMethods>>> GetSpecialDeliveries()
         {
             return Ok(await _order.GetSpecialDeliveries());
         }
    
         [HttpPost]
-        // [Authorize]
         public async Task<ActionResult<ActualOrder>> CreateOrder(OrderDTO orderDTO)
         {
             var Email = HttpContext.User.RetrieveUserEmail();
-            var Address = _mapper.Map<AddressDTO, Address>(orderDTO.ShiptoAddress);
-            var Order = await _order.CreateOrderAsync(Email, orderDTO.SpecialDeliveryID, orderDTO.CartId,Address);
+            var Address = _mapper.Map<UserAddressDTO, Address>(orderDTO.ShiptoAddress);
+            var Order = await _order.CreateOrderAsync(Email,orderDTO.SpecialDeliveryID, orderDTO.CartId,Address);
             if (Order == null) return BadRequest(new ApiErrorResponse(400, "Problem Creating Order!"));
             return Ok(Order);
         }
