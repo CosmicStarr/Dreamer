@@ -14,6 +14,6 @@ namespace Models.DTOS
         public bool IsAvailable { get; set; }
         public string Category { get; set; }
         public string Brand { get; set; }
-        public string ImageUrl { get; set; }
+        public ICollection<PhotosDTO> photosDTO { get; set; }
     }
 }

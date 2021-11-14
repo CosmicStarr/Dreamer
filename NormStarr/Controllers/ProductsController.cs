@@ -25,7 +25,7 @@ namespace NormStarr.Controllers
         [HttpGet("IsAvailable")]
         public async Task<ActionResult<IEnumerable<ProductsDTO>>> IsAvailableAsync([FromQuery]PageParams Param)
         {
-            var isAvailable = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.IsAvailable == true,x=>x.OrderBy(x=>x.Name),"Category,Brand");
+            var isAvailable = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.IsAvailable == true,x=>x.OrderBy(x=>x.Name),"Category,Brand,Photos");
             var mappedIsAvailable = _mapper.Map<PagerList<Products>,PagerList<ProductsDTO>>(isAvailable);
             return Ok(mappedIsAvailable);
         }
@@ -33,7 +33,7 @@ namespace NormStarr.Controllers
         [HttpGet("OnSale")]
         public async Task<ActionResult<IEnumerable<ProductsDTO>>> IsOnSaleAsync([FromQuery]PageParams Param)
         {
-            var onSale = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.IsOnSale == true,r => r.OrderBy(s =>s.Name),"Category,Brand");
+            var onSale = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.IsOnSale == true,r => r.OrderBy(s =>s.Name),"Category,Brand,Photos");
             var mappedOnSale = _mapper.Map<PagerList<Products>,PagerList<ProductsDTO>>(onSale);
             return Ok(mappedOnSale);
         }
@@ -41,7 +41,7 @@ namespace NormStarr.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<ProductsDTO>> GetProductAsync(int Id)
         {
-            var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.ProductId == Id,"Category,Brand");
+            var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.Id == Id,"Category,Brand,Photos");
             var mappedObj = _mapper.Map<Products,ProductsDTO>(obj);
             return Ok(mappedObj);
         }
@@ -51,33 +51,33 @@ namespace NormStarr.Controllers
         public async Task<ActionResult<IEnumerable<ProductsDTO>>> GetProductsAsync([FromQuery]PageParams Param,string Search)
         {
             
-            var Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand");
+            var Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand,Photos");
             if(!string.IsNullOrEmpty(Param.Sort))
             {
                 switch (Param.Sort)
                 {
-                    case "priceAsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x=>x.Price),"Category,Brand");
+                    case "priceAsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x=>x.Price),"Category,Brand,Photos");
                     break;
-                    case "priceDsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderByDescending(x=>x.Price),"Category,Brand");
+                    case "priceDsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderByDescending(x=>x.Price),"Category,Brand,Photos");
                     break;
-                    default: Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand"); break;
+                    default: Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand,Photos"); break;
                 }
             }
             if(!string.IsNullOrEmpty(Search))
             {
-                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Name.ToLower().Contains(Search),x =>x.OrderBy(x =>x.Name),"Category,Brand");
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Name.ToLower().Contains(Search),x =>x.OrderBy(x =>x.Name),"Category,Brand,Photos");
             }
             if(Param.BrandId.HasValue)
             {
-                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Brand.BrandId == Param.BrandId,o =>o.OrderBy(x =>x.Name),"Category,Brand"); 
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Brand.BrandId == Param.BrandId,o =>o.OrderBy(x =>x.Name),"Category,Brand,Photos"); 
             }
             if(Param.CatId.HasValue)
             {
-                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Category.CatId == Param.CatId,o =>o.OrderBy(x=>x.Name),"Category,Brand");
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Category.CatId == Param.CatId,o =>o.OrderBy(x=>x.Name),"Category,Brand,Photos");
             }
             if(Param.BrandId.HasValue && Param.CatId.HasValue)
             {
-                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Brand.BrandId == Param.BrandId & x.Category.CatId == Param.CatId,o =>o.OrderBy(x =>x.Name),"Category,Brand");
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Brand.BrandId == Param.BrandId & x.Category.CatId == Param.CatId,o =>o.OrderBy(x =>x.Name),"Category,Brand,Photos");
             }
             //PageSize is the amout of items per page!
             Response.AddPaginationHeader(Data.CurrentPage,Data.PageSize,Data.TotalCount,Data.TotalPages);

@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211113060001_update6")]
+    partial class update6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -415,7 +417,8 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductsId");
+                    b.HasIndex("ProductsId")
+                        .IsUnique();
 
                     b.ToTable("Pictures");
                 });
@@ -600,8 +603,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Models.Photos", b =>
                 {
                     b.HasOne("Models.Products", "Products")
-                        .WithMany("Photos")
-                        .HasForeignKey("ProductsId")
+                        .WithOne("Photos")
+                        .HasForeignKey("Models.Photos", "ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

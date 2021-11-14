@@ -10,7 +10,7 @@ namespace NormStarr.AutoMapperProfiles
     {
         public AutoMapProfiles()
         {
-            
+            CreateMap<Photos,PhotosDTO>();
             CreateMap<ForgotPassword,ForgotPasswordDTO>().ReverseMap();
             CreateMap<ResetPassword,ResetPasswordDTO>().ReverseMap();
             CreateMap<AppUser,AppUserDTO>();
@@ -26,7 +26,7 @@ namespace NormStarr.AutoMapperProfiles
             CreateMap<LoginModel,LoginDTO>().ReverseMap();
             CreateMap<Brand,BrandDTO>().ForMember(x =>x.Name,o =>o.MapFrom(s => s.Name));
             CreateMap<Category,CategoryDTO>().ForMember(x =>x.Name,o =>o.MapFrom(s => s.Name));
-            CreateMap<Products,ProductsDTO>().ForMember(x => x.ProductId,o =>o.MapFrom(s =>s.ProductId))
+            CreateMap<Products,ProductsDTO>().ForMember(x => x.ProductId,o =>o.MapFrom(s =>s.Id))
                                              .ForMember(x =>x.Category, o =>o.MapFrom(s => s.Category.Name))
                                              .ForMember(x =>x.Brand, o => o.MapFrom(s => s.Brand.Name));
         }

@@ -11,6 +11,6 @@ namespace Models.DTOS
         public string PhotoUrl { get; set; }
         public bool MainPic { get; set; }
         public string PublicId { get; set; }
-        public int ProductId { get; set; }
+        public int ProductsId { get; set; }
     }
 }

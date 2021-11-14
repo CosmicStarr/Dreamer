@@ -164,6 +164,8 @@ namespace Data.ClassesForInterfaces
                         await _userManager.AddToRoleAsync(user,StaticInfo.CustomerRole);
                     }               
                 }  
+                await _userManager.GetRolesAsync(user);
+                await _userManager.GetClaimsAsync(user); 
             }
                 var role = await _userManager.GetRolesAsync(NewUser);
                 IList<Claim> Claim = await _userManager.GetClaimsAsync(NewUser); 

@@ -29,8 +29,8 @@ namespace Data.ClassesForInterfaces
             foreach (var item in Cart.ShoppingCartItems)
             {
                 var ProFromDb = await _unitOfWork.Repository<Products>().Get(item.CartItemsId);
-                var Obj = new MappedProducts(ProFromDb.ProductId, ProFromDb.Name,ProFromDb.ImageUrl);
-                var ItemsOrdered = new OrderedItems(Obj.ProductsItemId, Obj.ItemName, Obj.photos, item.Price, item.Amount);
+                var Obj = new MappedProducts(ProFromDb.Id, ProFromDb.Name);
+                var ItemsOrdered = new OrderedItems(Obj.ProductsItemId, Obj.ItemName, item.Price, item.Amount);
                 items.Add(ItemsOrdered);
             }
             var Delivery = await _unitOfWork.Repository<DeliveryMethods>().Get(SpeciaDeliveryId);

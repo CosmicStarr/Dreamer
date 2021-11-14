@@ -23,8 +23,6 @@ namespace Data
         public DbSet<OrderedItems> GetOrderedItems { get; set; }
         public DbSet<DeliveryMethods> GetDeliveryMethods { get; set; }
         public DbSet<UserAddress> GetUserAddresses { get; set; }
-        public DbSet<Photos> GetPhotos { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

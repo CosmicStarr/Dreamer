@@ -73,13 +73,11 @@ namespace NormStarr.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<RegisterDTO>> Register([FromBody]RegisterModel registerDTO)
         {
-            if(ModelState.IsValid)
-            {
-                if (await UserExist(registerDTO.Email)) return BadRequest("Email already exist!");
-                var mappedUser = _mapper.Map<RegisterModel, RegisterDTO>(registerDTO);
-                var User = await _appRepo.SignUp(mappedUser);
-                if (User == null) return BadRequest(new ApiErrorResponse(400));
-            }
+         
+            if (await UserExist(registerDTO.Email)) return BadRequest("Email already exist!");
+            var mappedUser = _mapper.Map<RegisterModel, RegisterDTO>(registerDTO);
+            var User = await _appRepo.SignUp(mappedUser);
+            if (User == null) return BadRequest(new ApiErrorResponse(400));
             return Ok(User);
         }
 
@@ -131,6 +129,7 @@ namespace NormStarr.Controllers
             {
                 return Ok(_mapper.Map<UserAddress, UserAddressDTO>(UserAdd.Addresses));             
             }
+            
             return BadRequest("Request not granted!");
         }
     }

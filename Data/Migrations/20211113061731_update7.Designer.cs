@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211111180512_update15")]
-    partial class update15
+    [Migration("20211113061731_update7")]
+    partial class update7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -293,14 +293,14 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductsItemId")
                         .HasColumnType("int");
-
-                    b.Property<string>("photos")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -398,25 +398,33 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Photos", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhotoUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PublicId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.ToTable("GetPhotos");
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("Models.Products", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -428,9 +436,6 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAvailable")
@@ -445,7 +450,10 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProductId");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
@@ -594,6 +602,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Models.Photos", b =>
+                {
+                    b.HasOne("Models.Products", "Products")
+                        .WithMany("Photos")
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Models.Products", b =>
                 {
                     b.HasOne("Models.Brand", "Brand")
@@ -626,6 +645,11 @@ namespace Data.Migrations
             modelBuilder.Entity("Models.Orders.ActualOrder", b =>
                 {
                     b.Navigation("OrderedItems");
+                });
+
+            modelBuilder.Entity("Models.Products", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

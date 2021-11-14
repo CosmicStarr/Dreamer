@@ -1,14 +1,13 @@
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Http;
+
 
 namespace Models
 {
-    public class Products
+    public class Products:BaseEntity
     {
-        [Key]
-        public int ProductId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         [Column(TypeName ="decimal(18,2)")]
@@ -17,6 +16,7 @@ namespace Models
         public bool IsAvailable { get; set; }
         public Category Category { get; set; }
         public Brand Brand { get; set; }
-        public string ImageUrl { get; set; }
+        public ICollection<Photos> Photos { get; set; }
+
     }
 }

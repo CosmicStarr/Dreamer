@@ -1,12 +1,16 @@
 
 using System;
 using System.IO;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
+using AutoMapper;
 using Data.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTOS;
 using NormStarr.ErrorHandling;
 
 namespace NormStarr.Controllers
@@ -15,93 +19,37 @@ namespace NormStarr.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPhotoServices _photoServices;
-        private readonly IWebHostEnvironment _host;
-        public CreateItemsController(IUnitOfWork unitOfWork, IPhotoServices photoServices,IWebHostEnvironment host)
+        private readonly IMapper _mapper;
+        public CreateItemsController(IUnitOfWork unitOfWork, IPhotoServices photoServices,IMapper mapper)
         {
-            _host = host;
+            _mapper = mapper;
             _photoServices = photoServices;
             _unitOfWork = unitOfWork;
             
         }
 
-        [HttpPost("CreateProducts")]
-        public async Task<ActionResult<Products>> CreateProducts(Products products)
-        {
-            string webrootpath = _host.WebRootPath;
-            var files = HttpContext.Request.Form.Files;
-            if(products.ProductId == 0)
-            {
-                string fileName = Guid.NewGuid().ToString();
-                var uploads = Path.Combine(webrootpath, @"images");
-                var extension = Path.GetExtension(files[0].FileName);
-                using (var filestream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
-                {
-                    files[0].CopyTo(filestream);
-                }
-                products.ImageUrl = @"\images\" + fileName + extension;
-                _unitOfWork.Repository<Products>().Add(products);
-            }
-            else
-            {
-                var obj = await _unitOfWork.Repository<Products>().Get(products.ProductId);
-                if(files.Count > 0)
-                {
-                    string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webrootpath, @"images");
-                    var new_extension = Path.GetExtension(files[0].FileName);
-
-                    var imagePath = Path.Combine(webrootpath, products.ImageUrl.TrimStart('\\'));
-                    if(System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                    using (var filestream = new FileStream(Path.Combine(uploads, fileName + new_extension), FileMode.Create))
-                    {
-                            files[0].CopyTo(filestream);
-                    }
-                    products.ImageUrl = @"\images\" + fileName + new_extension;
-                }
-                else
-                {
-                    products.ImageUrl = obj.ImageUrl;
-                }
-                _unitOfWork.Repository<Products>().Update(products);
-            }
-            await _unitOfWork.Complete();
-            return Ok(products);
-        }
-
-
-
-        [HttpDelete("DeleteProducts")]
-        public async Task<ActionResult<Products>> DeleteProducts(int Id)
-        {
-            var obj = await _unitOfWork.Repository<Products>().Get(Id);
-            string webrootpath = _host.WebRootPath;
-            var imagePath = Path.Combine(webrootpath, obj.ImageUrl.TrimStart('\\'));
-            if (System.IO.File.Exists(imagePath))
-            {
-                System.IO.File.Delete(imagePath);
-            }
-             _unitOfWork.Repository<Products>().Remove(obj);
-            await _unitOfWork.Complete();
-            return Ok();
-        }
         
-        [HttpPost("AddPhoto")]
-        public async Task<ActionResult<Photos>> CreatePhotos(IFormFile photos)
+        [HttpPost("AddPhoto/Id")]
+        public async Task<ActionResult<PhotosDTO>> CreatePhotos(IFormFile photos, int? Id)
         {
+            var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.Id == Id,"Category,Brand,Photos");
             //results are coming from cloudinary!
             var results = await _photoServices.AddPhotoAsync(photos);
             if(results.Error != null) return BadRequest(new ApiErrorResponse(400));
             var photo = new Photos
             {
+                Products = obj,
                 PhotoUrl = results.SecureUrl.AbsoluteUri,
                 PublicId = results.PublicId
             };
+                
+            if(obj.Photos.Count == 0)
+            {
+                photo.IsMain = true;
+            }
             _unitOfWork.Repository<Photos>().Add(photo);
-            if(await _unitOfWork.Complete()> 0) return Ok();
-            return BadRequest("Problem Uploading!");
+            await _unitOfWork.Complete();
+            return Ok( _mapper.Map<PhotosDTO>(photo));
         }
 
         // [HttpPost("Category")] 
