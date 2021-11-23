@@ -25,6 +25,7 @@ namespace NormStarr.Extensions
         {
             services.Configure<CloudinaryPhotos>(config.GetSection("CloudinaryPhotos"));
             services.AddScoped<IPhotoServices,PhotoService>();
+            services.AddScoped<ICreateRepository,CreateClass>();
             services.AddScoped<IPaymentService,PaymentService>();
             services.AddScoped<IOrderRepository,OrderServices>();
             services.AddScoped<IShoppingCartRepository,ShoppingCartRepository>();

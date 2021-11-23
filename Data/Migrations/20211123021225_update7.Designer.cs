@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211112204800_update1")]
-    partial class update1
+    [Migration("20211123021225_update7")]
+    partial class update7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -409,7 +409,7 @@ namespace Data.Migrations
                     b.Property<string>("PhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductID")
+                    b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
                     b.Property<string>("PublicId")
@@ -417,14 +417,14 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("Models.Products", b =>
                 {
-                    b.Property<int>("ProdId")
+                    b.Property<int>("productId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -438,9 +438,6 @@ namespace Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
@@ -453,7 +450,7 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProdId");
+                    b.HasKey("productId");
 
                     b.HasIndex("BrandId");
 
@@ -604,13 +601,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Photos", b =>
                 {
-                    b.HasOne("Models.Products", "Product")
+                    b.HasOne("Models.Products", "Products")
                         .WithMany("Photos")
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Models.Products", b =>

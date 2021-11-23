@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211113055616_update5")]
-    partial class update5
+    [Migration("20211123004732_update4")]
+    partial class update4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -417,14 +417,15 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductsId");
+                    b.HasIndex("ProductsId")
+                        .IsUnique();
 
                     b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("Models.Products", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("productId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -447,13 +448,10 @@ namespace Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhotosId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("productId");
 
                     b.HasIndex("BrandId");
 
@@ -605,8 +603,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Models.Photos", b =>
                 {
                     b.HasOne("Models.Products", "Products")
-                        .WithMany("Photos")
-                        .HasForeignKey("ProductsId")
+                        .WithOne("Photos")
+                        .HasForeignKey("Models.Photos", "ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

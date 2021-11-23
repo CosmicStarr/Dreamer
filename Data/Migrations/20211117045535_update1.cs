@@ -49,7 +49,7 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GetBrands",
+                name: "Brands",
                 columns: table => new
                 {
                     BrandId = table.Column<int>(type: "int", nullable: false)
@@ -58,7 +58,21 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GetBrands", x => x.BrandId);
+                    table.PrimaryKey("PK_Brands", x => x.BrandId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CatId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CatId);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,20 +91,6 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GetCartItems", x => x.CartItemsId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GetCategories",
-                columns: table => new
-                {
-                    CatId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GetCategories", x => x.CatId);
                 });
 
             migrationBuilder.CreateTable(
@@ -259,7 +259,7 @@ namespace Data.Migrations
                 name: "GetProducts",
                 columns: table => new
                 {
-                    ProdId = table.Column<int>(type: "int", nullable: false)
+                    productId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -267,22 +267,21 @@ namespace Data.Migrations
                     IsOnSale = table.Column<bool>(type: "bit", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     CategoryCatId = table.Column<int>(type: "int", nullable: true),
-                    BrandId = table.Column<int>(type: "int", nullable: true),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    BrandId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GetProducts", x => x.ProdId);
+                    table.PrimaryKey("PK_GetProducts", x => x.productId);
                     table.ForeignKey(
-                        name: "FK_GetProducts_GetBrands_BrandId",
+                        name: "FK_GetProducts_Brands_BrandId",
                         column: x => x.BrandId,
-                        principalTable: "GetBrands",
+                        principalTable: "Brands",
                         principalColumn: "BrandId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_GetProducts_GetCategories_CategoryCatId",
+                        name: "FK_GetProducts_Categories_CategoryCatId",
                         column: x => x.CategoryCatId,
-                        principalTable: "GetCategories",
+                        principalTable: "Categories",
                         principalColumn: "CatId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -326,16 +325,16 @@ namespace Data.Migrations
                     IsMain = table.Column<bool>(type: "bit", nullable: false),
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublicId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProductID = table.Column<int>(type: "int", nullable: false)
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pictures", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pictures_GetProducts_ProductID",
-                        column: x => x.ProductID,
+                        name: "FK_Pictures_GetProducts_ProductsId",
+                        column: x => x.ProductsId,
                         principalTable: "GetProducts",
-                        principalColumn: "ProdId",
+                        principalColumn: "productId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -430,9 +429,9 @@ namespace Data.Migrations
                 filter: "[AppUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pictures_ProductID",
+                name: "IX_Pictures_ProductsId",
                 table: "Pictures",
-                column: "ProductID");
+                column: "ProductsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -483,10 +482,10 @@ namespace Data.Migrations
                 name: "GetDeliveryMethods");
 
             migrationBuilder.DropTable(
-                name: "GetBrands");
+                name: "Brands");
 
             migrationBuilder.DropTable(
-                name: "GetCategories");
+                name: "Categories");
         }
     }
 }

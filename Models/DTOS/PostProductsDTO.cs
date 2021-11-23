@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Models.DTOS
 {
-    public class ProductsDTO
+    public class PostProductsDTO
     {
         public int productsId { get; set; }
         public string Name { get; set; }
@@ -14,6 +17,6 @@ namespace Models.DTOS
         public bool IsAvailable { get; set; }
         public string CategoryDTO { get; set; }
         public string BrandDTO { get; set; }
-        public string photosDTO { get; set; }
+        public ICollection<PhotosDTO> photosDTO { get; set; }
     }
 }

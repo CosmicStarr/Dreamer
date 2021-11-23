@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211112212921_update2")]
-    partial class update2
+    [Migration("20211117045535_update1")]
+    partial class update1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,7 +235,7 @@ namespace Data.Migrations
 
                     b.HasKey("BrandId");
 
-                    b.ToTable("GetBrands");
+                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("Models.CartItems", b =>
@@ -283,7 +283,7 @@ namespace Data.Migrations
 
                     b.HasKey("CatId");
 
-                    b.ToTable("GetCategories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Models.MappedProducts", b =>
@@ -424,7 +424,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Products", b =>
                 {
-                    b.Property<int>("ProdId")
+                    b.Property<int>("productId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -450,7 +450,7 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProdId");
+                    b.HasKey("productId");
 
                     b.HasIndex("BrandId");
 
@@ -601,13 +601,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Photos", b =>
                 {
-                    b.HasOne("Models.Products", "Product")
+                    b.HasOne("Models.Products", "Products")
                         .WithMany("Photos")
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Models.Products", b =>

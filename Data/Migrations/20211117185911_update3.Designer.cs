@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211112213408_update3")]
+    [Migration("20211117185911_update3")]
     partial class update3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -424,7 +424,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Products", b =>
                 {
-                    b.Property<int>("ProdId")
+                    b.Property<int>("productId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -450,7 +450,7 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProdId");
+                    b.HasKey("productId");
 
                     b.HasIndex("BrandId");
 
@@ -601,13 +601,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Photos", b =>
                 {
-                    b.HasOne("Models.Products", "Product")
+                    b.HasOne("Models.Products", "Products")
                         .WithMany("Photos")
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Models.Products", b =>

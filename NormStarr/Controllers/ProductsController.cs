@@ -41,7 +41,7 @@ namespace NormStarr.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<ProductsDTO>> GetProductAsync(int Id)
         {
-            var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.Id == Id,"Category,Brand,Photos");
+            var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.productId == Id,"Category,Brand,Photos");
             var mappedObj = _mapper.Map<Products,ProductsDTO>(obj);
             return Ok(mappedObj);
         }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211113062153_update8")]
-    partial class update8
+    [Migration("20211123004935_update5")]
+    partial class update5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -424,7 +424,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Products", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("productId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -450,7 +450,7 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("productId");
 
                     b.HasIndex("BrandId");
 
