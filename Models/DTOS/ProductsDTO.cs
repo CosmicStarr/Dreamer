@@ -10,8 +10,8 @@ namespace Models.DTOS
         public string Description { get; set; }
         [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
-        public bool IsOnSale { get; set; }
-        public bool IsAvailable { get; set; }
+        public bool IsOnSale { get; set; } = false;
+        public bool IsAvailable { get; set; } = false;
         public string CategoryDTO { get; set; }
         public string BrandDTO { get; set; }
         public string photosDTO { get; set; }

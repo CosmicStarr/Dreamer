@@ -8,7 +8,7 @@ namespace Models.Orders
         {
             
         }
-        public Address(string street, string state, string city, string zipcode)
+        public Address(string street, string state, string city, int zipcode)
         {
             Street = street;
             State = state;
@@ -22,6 +22,6 @@ namespace Models.Orders
         public string City { get; set; }
         public string State { get; set; }
         [DataType(DataType.PostalCode)]
-        public string ZipCode { get; set; }  
+        public int ZipCode { get; set; }  
     }
 }

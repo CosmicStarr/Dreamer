@@ -15,7 +15,7 @@ namespace Models
         public string City { get; set; }
         public string State { get; set; }
         [DataType(DataType.PostalCode)]
-        public string ZipCode { get; set; } 
+        public int ZipCode { get; set; } 
         public string AppUserId { get; set; }
         public AppUser AppUser { get; set; }
     }

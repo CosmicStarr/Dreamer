@@ -112,16 +112,37 @@ namespace NormStarr.Controllers
             return Ok(_mapper.Map<UserAddress,UserAddressDTO>(Address)); 
         }
 
-        [HttpPost("Address")]
+        [HttpPost("CreateAddress")]
+        [Authorize]
+        public async Task<ActionResult<UserAddress>> CreateUserAddress(UserAddressDTO userAddressDTO)
+        {
+            var UserAdd = await _userManager.RetrieveEmail(HttpContext.User);
+            var mappedAddress = _mapper.Map<UserAddressDTO,UserAddress>(userAddressDTO);
+            if(mappedAddress.UserAddressId == 0)
+            {
+                mappedAddress.AppUserId = UserAdd.Id;
+                _unitOfWork.Repository<UserAddress>().Add(mappedAddress);
+            }
+            await _unitOfWork.Complete();
+            return Ok(_mapper.Map<UserAddress,UserAddressDTO>(mappedAddress));
+        }
+
+        [HttpPut("Address")]
         [Authorize]
         public async Task<ActionResult<UserAddressDTO>> UpdateUserAddress(UserAddressDTO address)
         {
             // You have to make this method a real put method. Retrieve the address thats equal to the Current User!
             var UserAdd = await _userManager.RetrieveEmail(HttpContext.User);
             UserAdd.Addresses = await _unitOfWork.Repository<UserAddress>().GetFirstOrDefault(x =>x.AppUserId == UserAdd.Id);
+             _unitOfWork.Repository<UserAddress>().Remove(UserAdd.Addresses);
             if(UserAdd.Addresses != null)
             {
-                _unitOfWork.Repository<UserAddress>().Remove(UserAdd.Addresses);
+                UserAdd.Addresses.FirstName = address.FirstName;
+                UserAdd.Addresses.LastName = address.LastName;
+                UserAdd.Addresses.Street = address.Street;
+                UserAdd.Addresses.City = address.City;
+                UserAdd.Addresses.State = address.State;
+                UserAdd.Addresses.ZipCode = address.ZipCode;
             }
             UserAdd.Addresses = _mapper.Map<UserAddressDTO, UserAddress>(address);
             var result = await _userManager.UpdateAsync(UserAdd);
@@ -129,7 +150,6 @@ namespace NormStarr.Controllers
             {
                 return Ok(_mapper.Map<UserAddress, UserAddressDTO>(UserAdd.Addresses));             
             }
-            
             return BadRequest("Request not granted!");
         }
     }

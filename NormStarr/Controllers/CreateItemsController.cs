@@ -89,37 +89,73 @@ namespace NormStarr.Controllers
         }
 
         [HttpPut("UpdateProduct/{Id}", Name="GetProduct" )]
-        public async Task<ActionResult<Products>> UpdateProduct(int Id, PostProductsDTO products)
-        {
-            //I have to create a real put method
+        public async Task<ActionResult<Products>> UpdateProduct([FromRoute]int Id, [FromBody]PostProductsDTO products)
+        {       
             var mapProduct = _mapper.Map<PostProductsDTO,Products>(products);
             mapProduct = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x =>x.productId == Id);
-             _unitOfWork.Repository<Products>().Remove(mapProduct);
             if(mapProduct != null)
-            {
-                    mapProduct = new Products()
-                    {
-                        productId = Id,
-                        Name = products.Name,
-                        Description = products.Description,
-                        Price = products.Price,
-                        IsAvailable = products.IsAvailable,
-                        IsOnSale = products.IsOnSale,
-                        Category = await _unitOfWork.Repository<Category>().GetFirstOrDefault(x =>x.Name == products.CategoryDTO),
-                        Brand = await _unitOfWork.Repository<Brand>().GetFirstOrDefault(x =>x.Name == products.BrandDTO)
-                    };  
+            { 
+                mapProduct.Name = products.Name;
+                mapProduct.Description = products.Description;
+                mapProduct.Price = products.Price;
+                mapProduct.IsAvailable = products.IsAvailable;
+                mapProduct.IsOnSale = products.IsOnSale;
+                mapProduct.Category = await _unitOfWork.Repository<Category>().GetFirstOrDefault(x =>x.Name == products.CategoryDTO);
+                mapProduct.Brand = await _unitOfWork.Repository<Brand>().GetFirstOrDefault(x =>x.Name == products.BrandDTO);
+                mapProduct.Photos = await _unitOfWork.Repository<Photos>().GetFirstOrDefault(x =>x.ProductsId == products.productsId);                 
                 _unitOfWork.Repository<Products>().Update(mapProduct);
             }
             await _unitOfWork.Complete();
             return Ok( _mapper.Map<Products,PostProductsDTO>(mapProduct));
         }
 
-        [HttpPost("AddPhoto/{Id}")]
-        public async Task<ActionResult<PhotosDTO>> CreatePhotos(IFormFile photos, int? Id)
+        [HttpDelete("DeleteProduct/{Id}")]
+        public async Task DeleteProduct(int Id)
+        {
+            var objToDelete = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x =>x.productId == Id);
+            if(objToDelete != null)
+            {
+                objToDelete.Photos = await _unitOfWork.Repository<Photos>().GetFirstOrDefault(x =>x.ProductsId == Id);
+                if(objToDelete.Photos != null)
+                {
+                    if(objToDelete.Photos.ProductsId != 0)
+                    {
+                        var results = await _photoServices.DeletePhotoAsync(objToDelete.Photos.PublicId);
+                        _unitOfWork.Repository<Photos>().Remove(objToDelete.Photos);
+                    }
+                }
+                _unitOfWork.Repository<Products>().Remove(objToDelete);
+            }
+            await _unitOfWork.Complete();
+        }
+
+        [HttpDelete("Delete-Photo/{Id}")]
+        public async Task<ActionResult> DeletePhoto(int Id)
+        {
+            var obj = await _unitOfWork.Repository<Photos>().GetFirstOrDefault(x =>x.Id == Id);
+            if(obj != null)
+            {
+                if(obj.PublicId is null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    var results = await _photoServices.DeletePhotoAsync(obj.PublicId);
+                    if(results.Error != null) return BadRequest(results.Error.Message);
+                }
+                _unitOfWork.Repository<Photos>().Remove(obj);
+            }
+            if(await _unitOfWork.Complete() > 0) return Ok();
+            return BadRequest("Something went complete wrong! Failed to delete photo!");
+        }
+
+        [HttpPost("Add-Photo/{Id}")]
+        public async Task<ActionResult<PhotosDTO>> CreatePhotos(int? Id, IFormFile file)
         {
             var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.productId == Id,"Category,Brand,Photos");
             //results are coming from cloudinary!
-            var results = await _photoServices.AddPhotoAsync(photos);
+            var results = await _photoServices.AddPhotoAsync(file);
             if(results.Error != null) return BadRequest(new ApiErrorResponse(400));
             var photo = new Photos
             {
@@ -140,14 +176,12 @@ namespace NormStarr.Controllers
             // obj.Photos.Add(photo);
 
             _unitOfWork.Repository<Photos>().Add(photo);
-            // await _unitOfWork.Complete();
+    
             if(await _unitOfWork.Complete() > 0) 
             {   
                 return CreatedAtRoute("GetProduct", new {Id = obj.productId}, _mapper.Map<Photos,PhotosDTO>(photo));
             }
             return BadRequest("Sorry! There was a problem Uploading your Photo!");
-            // return Ok( _mapper.Map<PhotosDTO>(photo));
         }
-
     }
 }

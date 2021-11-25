@@ -12,11 +12,11 @@ namespace Models
         {
             
         }
-        public MappedProducts(int productsItemId, string itemName)
+        public MappedProducts(int productsItemId, string itemName, string imageUrl)
         {
             ProductsItemId = productsItemId;
             ItemName = itemName;
-          
+            ImageUrl = imageUrl;
         }
 
         public int Id { get; set; }

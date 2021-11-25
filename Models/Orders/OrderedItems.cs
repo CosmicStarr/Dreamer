@@ -15,12 +15,13 @@ namespace Models.Orders
             
         }
 
-        public OrderedItems(int itemsId, string productName, decimal price, int amount)
+        public OrderedItems(int itemsId, string productName, decimal price, int amount,string imageUrl)
         {
             ItemsId = itemsId;
             ProductName = productName;
             Price = price;
             Amount = amount;
+            ImageUrl = imageUrl;
         }
 
         [Key]
