@@ -75,8 +75,8 @@ namespace NormStarr.Controllers
                         Name = products.Name,
                         Description = products.Description,
                         Price = products.Price,
-                        IsAvailable = products.IsAvailable,
-                        IsOnSale = products.IsOnSale,
+                        IsAvailable = products.IsAvailable ?? null,
+                        IsOnSale = products.IsOnSale ?? null,
                         Category = await _unitOfWork.Repository<Category>().GetFirstOrDefault(x =>x.Name == products.CategoryDTO),
                         Brand = await _unitOfWork.Repository<Brand>().GetFirstOrDefault(x =>x.Name == products.BrandDTO)
                     };  

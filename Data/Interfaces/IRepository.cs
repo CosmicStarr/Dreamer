@@ -10,6 +10,7 @@ namespace Data.Interfaces
 {
     public interface IRepository<T> where T : class
     {
+       
         Task<T> Get(int Id);
         Task<PagerList<T>> GetAllParams(PageParams Prams = null,Expression<Func<T,bool>> filter = null, 
         Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null, 
@@ -24,5 +25,6 @@ namespace Data.Interfaces
         void Remove(string Id);
         void RemoveRange(IEnumerable<T> entity);
         void Update(T entity);
+
     }
 }

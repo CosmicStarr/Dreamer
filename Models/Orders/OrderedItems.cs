@@ -15,20 +15,20 @@ namespace Models.Orders
             
         }
 
-        public OrderedItems(int itemsId, string productName, decimal price, int amount,string imageUrl)
+        public OrderedItems(int itemsId, string productName, decimal price, int amount,string photoUrl)
         {
             ItemsId = itemsId;
             ProductName = productName;
             Price = price;
             Amount = amount;
-            ImageUrl = imageUrl;
+            PhotoUrl = photoUrl;
         }
 
         [Key]
         public int Id { get; set; }
         public int ItemsId { get; set; }
         public string ProductName { get; set; }
-        public string ImageUrl { get; set; }
+        public string PhotoUrl { get; set; }
         [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
         public int  Amount { get; set; }

@@ -29,7 +29,7 @@ namespace Data.ClassesForInterfaces
             foreach (var item in Cart.ShoppingCartItems)
             {
                 var ProFromDb = await _unitOfWork.Repository<Products>().Get(item.CartItemsId);
-                var Obj = new MappedProducts(ProFromDb.productId, ProFromDb.Name,ProFromDb.Photos.PhotoUrl);
+                var Obj = new MappedProducts(ProFromDb.productId, ProFromDb.Name,item.PhotoUrl);
                 var ItemsOrdered = new OrderedItems(Obj.ProductsItemId, Obj.ItemName, item.Price, item.Amount, Obj.ImageUrl);
                 items.Add(ItemsOrdered);
             }

@@ -15,8 +15,10 @@ namespace Models
         public string Description { get; set; }
         [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
-        public bool IsOnSale { get; set; } = false;
-        public bool IsAvailable { get; set; } = false;
+        #nullable enable
+        public bool? IsOnSale { get; set; } = null;
+        public bool? IsAvailable { get; set; } = null;
+        #nullable disable
         public Category Category { get; set; }
         public Brand Brand { get; set; }
         public Photos Photos { get; set; } 
