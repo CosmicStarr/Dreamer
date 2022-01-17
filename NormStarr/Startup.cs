@@ -1,5 +1,8 @@
 
 using System.Linq;
+using System.Threading.Tasks;
+using Data.ClassesForInterfaces;
+using Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +29,7 @@ namespace NormStarr
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IDataInitialize,DataInitialize>();
             services.AppService(Configuration);
             services.AddControllers();
   
@@ -33,17 +37,17 @@ namespace NormStarr
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NormStarr", Version = "v1" });
             });
-            services.AddCors(options => 
+            services.AddCors(options =>
             {
-                options.AddDefaultPolicy(build => 
+                options.AddPolicy("CosmicDesigns", policy =>
                 {
-                    build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                 });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataInitialize data)
         {
             
             app.UseMiddleware<ExceptionMiddleWare>();
@@ -58,7 +62,8 @@ namespace NormStarr
             app.UseHttpsRedirection();
             app.UseRouting(); 
             app.UseStaticFiles();
-            app.UseCors();
+            app.UseCors("CosmicDesigns");
+            data.Initialize();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

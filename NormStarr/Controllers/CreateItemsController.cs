@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace NormStarr.Controllers
             _unitOfWork = unitOfWork;
             
         }
-
+        [Authorize(policy:"AdminManage")]
         [HttpPost("CreateCategory")]
         public async Task<ActionResult<CategoryDTO>> CreateCategory([FromBody]Category category)
         {
@@ -42,7 +43,8 @@ namespace NormStarr.Controllers
             var mappedProduct = _mapper.Map<Category,CategoryDTO>(category);
             return Ok(mappedProduct);
         }
-        
+
+        [Authorize(policy:"AdminManage")]
         [HttpPost("CreateBrand")]
         public async Task<ActionResult<BrandDTO>> CreateBrand(Brand brand)
         {
@@ -60,10 +62,11 @@ namespace NormStarr.Controllers
             return Ok(mappedProduct);
         }
       
-
+        [Authorize(policy:"AdminManage")]
         [HttpPost("CreateProduct")]
         public async Task<ActionResult<Products>> CreateProducts([FromBody]PostProductsDTO products)
         {
+            //Create a Repository for the logic below
             var mapProduct = _mapper.Map<PostProductsDTO,Products>(products);
             if(mapProduct.productId == 0)
             { 
@@ -75,10 +78,10 @@ namespace NormStarr.Controllers
                         Name = products.Name,
                         Description = products.Description,
                         Price = products.Price,
-                        IsAvailable = products.IsAvailable ?? null,
-                        IsOnSale = products.IsOnSale ?? null,
-                        Category = await _unitOfWork.Repository<Category>().GetFirstOrDefault(x =>x.Name == products.CategoryDTO),
-                        Brand = await _unitOfWork.Repository<Brand>().GetFirstOrDefault(x =>x.Name == products.BrandDTO)
+                        IsAvailable = products?.IsAvailable ??  false,
+                        IsOnSale = products?.IsOnSale ??  false,
+                        Category = await _unitOfWork.Repository<Category>().GetFirstOrDefault(x =>x.Name == products.CategoryDTO)??null,
+                        Brand = await _unitOfWork.Repository<Brand>().GetFirstOrDefault(x =>x.Name == products.BrandDTO)??null
                     };  
                 }
                 _unitOfWork.Repository<Products>().Add(mapProduct);
@@ -88,9 +91,11 @@ namespace NormStarr.Controllers
             return Ok(mapProduct);
         }
 
+        [Authorize(policy:"AdminManage")]
         [HttpPut("UpdateProduct/{Id}", Name="GetProduct" )]
         public async Task<ActionResult<Products>> UpdateProduct([FromRoute]int Id, [FromBody]PostProductsDTO products)
-        {       
+        {   
+            //Create a Repository for the logic below    
             var mapProduct = _mapper.Map<PostProductsDTO,Products>(products);
             mapProduct = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x =>x.productId == Id);
             if(mapProduct != null)
@@ -98,8 +103,8 @@ namespace NormStarr.Controllers
                 mapProduct.Name = products.Name;
                 mapProduct.Description = products.Description;
                 mapProduct.Price = products.Price;
-                mapProduct.IsAvailable = products.IsAvailable;
-                mapProduct.IsOnSale = products.IsOnSale;
+                mapProduct.IsAvailable = products.IsAvailable ?? false;
+                mapProduct.IsOnSale = products.IsOnSale ?? false;
                 mapProduct.Category = await _unitOfWork.Repository<Category>().GetFirstOrDefault(x =>x.Name == products.CategoryDTO);
                 mapProduct.Brand = await _unitOfWork.Repository<Brand>().GetFirstOrDefault(x =>x.Name == products.BrandDTO);
                 mapProduct.Photos = await _unitOfWork.Repository<Photos>().GetFirstOrDefault(x =>x.ProductsId == products.productsId);                 
@@ -109,9 +114,11 @@ namespace NormStarr.Controllers
             return Ok( _mapper.Map<Products,PostProductsDTO>(mapProduct));
         }
 
+        [Authorize(policy:"AdminManage")]
         [HttpDelete("DeleteProduct/{Id}")]
         public async Task DeleteProduct(int Id)
         {
+            //Create a Repository for the logic below
             var objToDelete = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x =>x.productId == Id);
             if(objToDelete != null)
             {
@@ -120,6 +127,7 @@ namespace NormStarr.Controllers
                 {
                     if(objToDelete.Photos.ProductsId != 0)
                     {
+                        //deleting the photo in cloudinary first then database!
                         var results = await _photoServices.DeletePhotoAsync(objToDelete.Photos.PublicId);
                         _unitOfWork.Repository<Photos>().Remove(objToDelete.Photos);
                     }
@@ -129,6 +137,8 @@ namespace NormStarr.Controllers
             await _unitOfWork.Complete();
         }
 
+
+        [Authorize(policy:"AdminManage")]
         [HttpDelete("Delete-Photo/{Id}")]
         public async Task<ActionResult> DeletePhoto(int Id)
         {
@@ -147,9 +157,11 @@ namespace NormStarr.Controllers
                 _unitOfWork.Repository<Photos>().Remove(obj);
             }
             if(await _unitOfWork.Complete() > 0) return Ok();
-            return BadRequest("Something went complete wrong! Failed to delete photo!");
+            return BadRequest("Something went completely wrong! Failed to delete photo!");
         }
 
+
+        [Authorize(policy:"AdminManage")]
         [HttpPost("Add-Photo/{Id}")]
         public async Task<ActionResult<PhotosDTO>> CreatePhotos(int? Id, IFormFile file)
         {

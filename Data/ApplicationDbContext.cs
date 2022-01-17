@@ -18,7 +18,7 @@ namespace Data
         public DbSet<ActualOrder> GetActualOrders { get; set; }
         public DbSet<MappedProducts> GetMappedProducts { get; set; }
         public DbSet<OrderedItems> GetOrderedItems { get; set; }
-        public DbSet<DeliveryMethods> GetDeliveryMethods { get; set; }
+        // public DbSet<DeliveryMethods> GetDeliveryMethods { get; set; }
         public DbSet<UserAddress> GetUserAddresses { get; set; }
         public DbSet<Category> GetCategories { get; set; }
         public DbSet<Brand> GetBrands { get; set; }

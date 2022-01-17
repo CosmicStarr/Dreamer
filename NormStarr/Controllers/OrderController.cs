@@ -36,35 +36,69 @@ namespace NormStarr.Controllers
         public async Task<ActionResult<ActualOrderDTO>> GetOrderAsync(int Id)
         {
             var Email = HttpContext.User.RetrieveUserEmail();
-            var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,SpeaiclDelivery,ShippingAddress");
+            var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,ShippingAddress");
+            // var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,SpeaiclDelivery,ShippingAddress");
             if(SingleObj == null) return NotFound(new ApiErrorResponse(404,"What you're looking for does not exist!"));
             return Ok(_mapper.Map<ActualOrder,ActualOrderDTO>(SingleObj));
         }
         
      
-        [HttpGet]
+        [HttpGet("User")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetActualOrders()
         {
             var Email = HttpContext.User.RetrieveUserEmail();
+            // var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.Email == Email,x =>x.OrderByDescending(x =>x.OrderDate)
+            // ,"OrderedItems,SpeaiclDelivery,ShippingAddress");
             var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.Email == Email,x =>x.OrderByDescending(x =>x.OrderDate)
-            ,"OrderedItems,SpeaiclDelivery,ShippingAddress");
+            ,"OrderedItems,ShippingAddress");
             return Ok(_mapper.Map<IEnumerable<ActualOrder>,IEnumerable<ActualOrderDTO>>(Orders));
         }
 
-        
-        [HttpGet("deli")]
-        public async Task<ActionResult<IEnumerable<DeliveryMethods>>> GetSpecialDeliveries()
+        [HttpGet]
+        [Authorize(policy:"AdminManage")]
+        public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetAllOrdersAsync()
         {
-            return Ok(await _order.GetSpecialDeliveries());
+            var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x=>x.OrderStatus == StaticContent.StaticInfo.StatusSubmitted || x.OrderStatus == StaticContent.StaticInfo.StatusinProcess,x =>x.OrderByDescending(x =>x.OrderDate)
+            ,"OrderedItems,ShippingAddress");
+            // var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x=>x.OrderStatus == StaticContent.StaticInfo.StatusSubmitted || x.OrderStatus == StaticContent.StaticInfo.StatusinProcess,x =>x.OrderByDescending(x =>x.OrderDate)
+            // ,"OrderedItems,SpeaiclDelivery,ShippingAddress");
+            return Ok(_mapper.Map<IEnumerable<ActualOrder>,IEnumerable<ActualOrderDTO>>(Orders));
         }
+
+        [HttpPost("inProcess")]
+        public async Task OrderInProcess([FromBody]int id)
+        {
+            await _order.UpdateOrderStatus(id,StaticContent.StaticInfo.StatusinProcess);
+            await _unitOfWork.Complete();
+        }
+
+        [HttpPost("ready")]
+        public async Task OrderReady(int id)
+        {
+            await _order.UpdateOrderStatus(id,StaticContent.StaticInfo.StatusReady);
+            await _unitOfWork.Complete();
+        }
+
+        [HttpPost("cancel")]
+        public async Task OrderCancel(int id)
+        {
+            await _order.UpdateOrderStatus(id,StaticContent.StaticInfo.StatusCancelled);
+            await _unitOfWork.Complete();
+        }
+
+        // [HttpGet("deli")]
+        // public async Task<ActionResult<IEnumerable<DeliveryMethods>>> GetSpecialDeliveries()
+        // {
+        //     return Ok(await _order.GetSpecialDeliveries());
+        // }
    
         [HttpPost]
         public async Task<ActionResult<ActualOrder>> CreateOrder(OrderDTO orderDTO)
         {
             var Email = HttpContext.User.RetrieveUserEmail();
             var Address = _mapper.Map<UserAddressDTO, Address>(orderDTO.ShiptoAddress);
-            var Order = await _order.CreateOrderAsync(Email,orderDTO.SpecialDeliveryID, orderDTO.CartId,Address);
+            var Order = await _order.CreateOrderAsync(Email, orderDTO.CartId,Address);
             if (Order == null) return BadRequest(new ApiErrorResponse(400, "Problem Creating Order!"));
             return Ok(Order);
         }

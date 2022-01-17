@@ -24,6 +24,7 @@ namespace Data.Pager
         }
 
         public string Sort { get; set; }
+        public string Search { get; set; }
         public int? BrandId { get; set; }
         public int? CatId { get; set; }
     }

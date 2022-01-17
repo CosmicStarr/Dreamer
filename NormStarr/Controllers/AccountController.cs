@@ -103,6 +103,7 @@ namespace NormStarr.Controllers
         {
             return await _userManager.Users.AnyAsync(u => u.UserName == Username.ToLower());
         }
+        
         [HttpGet("GetAddress")]
         [Authorize]
         public async Task<ActionResult<UserAddressDTO>> GetAddressAsync()

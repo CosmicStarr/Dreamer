@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
@@ -23,6 +24,7 @@ namespace NormStarr.Controllers
 
   
         [HttpPost("{cartId}")]
+        [Authorize]
         public async Task<ActionResult<ShoppingCart>> CreateOrUpdatePayment(string cartId)
         {
             var Cart = await _paymentService.CreateOrUpdatePaymentIntent(cartId);
@@ -37,6 +39,7 @@ namespace NormStarr.Controllers
             var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], whSecret);
             PaymentIntent intent;
             ActualOrder actualOrder;
+       
             switch (stripeEvent.Type)
             {
                 case "payment_intent.succeeded":

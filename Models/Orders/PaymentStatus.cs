@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.Orders
 {
-    public enum OrderStatus
+    public enum PaymentStatus
     {
         [EnumMember(Value= "Pending")]
         Pending,

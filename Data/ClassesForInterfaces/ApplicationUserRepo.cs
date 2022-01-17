@@ -109,7 +109,7 @@ namespace Data.ClassesForInterfaces
                 Email = registerDTO.Email,
                 FirstName = registerDTO.FirstName,
                 LastName = registerDTO.LastName,
-                UserName = registerDTO.Email
+                UserName = registerDTO.Email,
             };
             var results = await _userManager.CreateAsync(NewUser, registerDTO.Password);
             if(results.Succeeded)
@@ -128,44 +128,48 @@ namespace Data.ClassesForInterfaces
                 var EmailFromMySite = _configuration["ReturnPath:SenderEmail"];
 
                 await _emailSender.SendEmail(EmailFromMySite,user.Email,"Confirm your email address",urlString);
-                // if(!await _roleManager.RoleExistsAsync(registerDTO.Role))
+                // if(!await _roleManager.RoleExistsAsync(StaticInfo.AdminRole))
                 // {
-                //     await _roleManager.CreateAsync(new IdentityRole(registerDTO.Role));
-                //     await _userManager.AddToRoleAsync(user,registerDTO.Role);
+                //     await _roleManager.CreateAsync(new IdentityRole(StaticInfo.AdminRole));
+                //     await _roleManager.CreateAsync(new IdentityRole(StaticInfo.ManagerRole));
+                //     await _roleManager.CreateAsync(new IdentityRole(StaticInfo.Employee));
+                //     await _roleManager.CreateAsync(new IdentityRole(StaticInfo.CustomerRole));
+                //     await _userManager.AddToRolesAsync(user,new[] {StaticInfo.AdminRole,StaticInfo.ManagerRole});
+                //     var claim = new Claim("JobDepartment", registerDTO.JobDepartment);
+                //     await _userManager.AddClaimAsync(user,claim);
+                //     await _userManager.GetRolesAsync(user);
+                //     await _userManager.GetClaimsAsync(user); 
                 // }
-                if(!await _roleManager.RoleExistsAsync(StaticInfo.AdminRole))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(StaticInfo.AdminRole));
-                    await _roleManager.CreateAsync(new IdentityRole(StaticInfo.ManagerRole));
-                    await _roleManager.CreateAsync(new IdentityRole(StaticInfo.Employee));
-                    await _roleManager.CreateAsync(new IdentityRole(StaticInfo.CustomerRole));
-                    await _userManager.AddToRolesAsync(user,new[] {StaticInfo.AdminRole,StaticInfo.ManagerRole});
-                    var claim = new Claim("JobDepartment", registerDTO.JobDepartment);
-                    await _userManager.AddClaimAsync(user,claim);
-                    await _userManager.GetRolesAsync(user);
-                    await _userManager.GetClaimsAsync(user); 
-                }
-                if(registerDTO.Role == StaticInfo.AdminRole)
-                {
-                    await _userManager.AddToRolesAsync(user,new[] {StaticInfo.AdminRole,StaticInfo.ManagerRole});
-                }
-                else if(registerDTO.Role == StaticInfo.ManagerRole)
-                {
-                     await _userManager.AddToRoleAsync(user,StaticInfo.ManagerRole);
-                }
-                else
-                {
-                    if(registerDTO.Role == StaticInfo.Employee)
-                    {
-                        await _userManager.AddToRoleAsync(user,StaticInfo.Employee);
-                    }
-                    else if (registerDTO.Role != StaticInfo.AdminRole || registerDTO.Role != StaticInfo.ManagerRole || registerDTO.Role != StaticInfo.Employee )
-                    {
-                        await _userManager.AddToRoleAsync(user,StaticInfo.CustomerRole);
-                    }               
-                }  
+                // if(registerDTO.Role == StaticInfo.AdminRole)
+                // {
+                //     await _userManager.AddToRolesAsync(user,new[] {StaticInfo.AdminRole,StaticInfo.ManagerRole});
+                // }
+                // else if(registerDTO.Role == StaticInfo.ManagerRole)
+                // {
+                //      await _userManager.AddToRoleAsync(user,StaticInfo.ManagerRole);
+                // }
+                // else
+                // {
+                //     if(registerDTO.Role == StaticInfo.Employee)
+                //     {
+                //         await _userManager.AddToRoleAsync(user,StaticInfo.Employee);
+                //     }
+                //     else if (registerDTO.Role != StaticInfo.AdminRole || registerDTO.Role != StaticInfo.ManagerRole || registerDTO.Role != StaticInfo.Employee )
+                //     {
+                //         await _userManager.AddToRoleAsync(user,StaticInfo.CustomerRole);
+                //     }               
+                // }  
                 await _userManager.GetRolesAsync(user);
                 await _userManager.GetClaimsAsync(user); 
+            }
+            if(!await _roleManager.RoleExistsAsync(registerDTO.Role))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(registerDTO.Role));
+                await _userManager.AddToRoleAsync(NewUser,registerDTO.Role);
+            }
+            if(registerDTO.Role != StaticInfo.AdminRole || registerDTO.Role != StaticInfo.ManagerRole || registerDTO.Role != StaticInfo.Employee )
+            {
+                await _userManager.AddToRoleAsync(NewUser,StaticInfo.CustomerRole);
             }
                 var role = await _userManager.GetRolesAsync(NewUser);
                 IList<Claim> Claim = await _userManager.GetClaimsAsync(NewUser); 

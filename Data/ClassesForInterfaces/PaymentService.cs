@@ -72,7 +72,7 @@ namespace Data.ClassesForInterfaces
         {
             var Order = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.PaymentId == paymentId);
             if(Order == null) return null;
-            Order.Status = OrderStatus.PaymentFailed;
+            Order.Status = PaymentStatus.PaymentFailed;
             _unitOfWork.Repository<ActualOrder>().Update(Order);
             await _unitOfWork.Complete();
             return Order;
@@ -82,7 +82,8 @@ namespace Data.ClassesForInterfaces
         {
             var Order = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.PaymentId == paymentId);
             if(Order == null) return null;
-            Order.Status = OrderStatus.PaymentRecevied;
+            Order.OrderStatus = "Submitted";
+            Order.Status = PaymentStatus.PaymentRecevied;
             _unitOfWork.Repository<ActualOrder>().Update(Order);
             await _unitOfWork.Complete();
             return Order;

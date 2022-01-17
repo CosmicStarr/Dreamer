@@ -16,8 +16,8 @@ namespace NormStarr.AutoMapperProfiles
             CreateMap<AppUser,AppUserDTO>();
             CreateMap<OrderedItems,OrderedItemsDTO>();
             CreateMap<Address,AddressDTO>();
-            CreateMap<ActualOrder,ActualOrderDTO>().ForMember(x =>x.SpeaiclDelivery,o =>o.MapFrom(s =>s.SpeaiclDelivery.DeliveryId))
-                                                   .ForMember(x => x.Total,o =>o.MapFrom(s =>s.GetTotal()))
+            //I removed the mapped profile for Speaicl Delieveries!
+            CreateMap<ActualOrder,ActualOrderDTO>().ForMember(x => x.Total,o =>o.MapFrom(s =>s.GetTotal()))
                                                    .ForMember(x => x.ActualOrderId,o => o.MapFrom(s => s.ActualOrderId));
                                                                                                                              
             CreateMap<CartItems,CartItemsDTO>();

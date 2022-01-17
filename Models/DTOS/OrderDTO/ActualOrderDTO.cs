@@ -19,6 +19,7 @@ namespace Models.DTOS.OrderDTO
         public decimal Total { get; set; }
         public IEnumerable<OrderedItemsDTO> OrderedItems { get; set; }
         public string Status { get; set; } 
+        public string OrderStatus { get; set; } 
         public string PaymentId { get; set; }
     }
 }

@@ -33,6 +33,7 @@ namespace NormStarr.Extensions
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IApplicationUserRepo,ApplicationUserRepo>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
+            
             services.AddAutoMapper(typeof(AutoMapProfiles));
             services.AddDbContext<ApplicationDbContext>(o =>
             {
@@ -86,10 +87,10 @@ namespace NormStarr.Extensions
             });
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("ManagerDevelopers", o =>
+                opt.AddPolicy("AdminManage", o =>
                 {
                     o.RequireClaim("JobDepartment","Developer");
-                    o.RequireRole(new[] {"Admin,Manager"});
+                    o.RequireAssertion(x =>x.User.IsInRole("Admin")||x.User.IsInRole("Manager"));
                 });
                 opt.AddPolicy("AdminDevelopers", o =>
                 {

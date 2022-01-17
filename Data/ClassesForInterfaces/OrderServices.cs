@@ -20,7 +20,7 @@ namespace Data.ClassesForInterfaces
             _unitOfWork = unitOfWork;
 
         }
-        public async Task<ActualOrder> CreateOrderAsync(string Email, int SpeciaDeliveryId, string CartId, Address address)
+        public async Task<ActualOrder> CreateOrderAsync(string Email, string CartId, Address address)
         {
             //get Shopping Cart
             var Cart = await _CartRepository.GetCartAsync(CartId);
@@ -30,12 +30,12 @@ namespace Data.ClassesForInterfaces
             {
                 var ProFromDb = await _unitOfWork.Repository<Products>().Get(item.CartItemsId);
                 var Obj = new MappedProducts(ProFromDb.productId, ProFromDb.Name,item.PhotoUrl);
-                var ItemsOrdered = new OrderedItems(Obj.ProductsItemId, Obj.ItemName, item.Price, item.Amount, Obj.ImageUrl);
+                var ItemsOrdered = new OrderedItems(Obj.ProductsItemId, Obj.ItemName, item.Price, item.Amount,item.PhotoUrl);
                 items.Add(ItemsOrdered);
             }
-            var Delivery = await _unitOfWork.Repository<DeliveryMethods>().Get(SpeciaDeliveryId);
+            // var Delivery = await _unitOfWork.Repository<DeliveryMethods>().Get(SpeciaDeliveryId);
             var SubTotal = items.Sum(items => items.Price * items.Amount);
-            var Order = new ActualOrder(items, Email, address, Delivery, SubTotal, Cart.PaymentID);
+            var Order = new ActualOrder(items, Email, address, SubTotal, Cart.PaymentID);
             //Adding Order To Database
             if (Order == null)
             {
@@ -53,9 +53,19 @@ namespace Data.ClassesForInterfaces
             return Order;
         }
 
-        public async Task<IEnumerable<DeliveryMethods>> GetSpecialDeliveries()
+        // public async Task<IEnumerable<DeliveryMethods>> GetSpecialDeliveries()
+        // {
+        //     return await _unitOfWork.Repository<DeliveryMethods>().GetAll(null, x => x.OrderBy(x => x.Price));
+        // }
+
+        public async Task UpdateOrderStatus(int id, string status)
         {
-            return await _unitOfWork.Repository<DeliveryMethods>().GetAll(null, x => x.OrderBy(x => x.Price));
+            var obj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == id);
+            if(obj != null)
+            {
+                obj.OrderStatus = status;
+            }
+          
         }
     }
 }

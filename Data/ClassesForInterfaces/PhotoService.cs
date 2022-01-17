@@ -32,7 +32,7 @@ namespace Data.ClassesForInterfaces
                 var UploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName,stream),
-                    Transformation = new Transformation().Height(500).Width(700).Crop("fill").Gravity("face")
+                    Transformation = new Transformation().Height(612).Width(612).Crop("fill").Gravity("face")
                 };
                 UploadedImage = await _cloud.UploadAsync(UploadParams);
             }

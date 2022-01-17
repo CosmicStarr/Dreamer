@@ -18,7 +18,7 @@ namespace Data
             });
             builder.Property(s =>s.Status)
                 .HasConversion(
-                c => c.ToString(),c => (OrderStatus) Enum.Parse(typeof(OrderStatus),c)
+                c => c.ToString(),c => (PaymentStatus) Enum.Parse(typeof(PaymentStatus),c)
             );
             builder.HasMany(o=>o.OrderedItems).WithOne().OnDelete(DeleteBehavior.Cascade);
         }

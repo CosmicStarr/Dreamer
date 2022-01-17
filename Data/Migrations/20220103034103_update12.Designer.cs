@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220103034103_update12")]
+    partial class update12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,6 +296,9 @@ namespace Data.Migrations
                     b.Property<string>("PaymentId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SpeaiclDeliveryDeliveryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -303,7 +308,33 @@ namespace Data.Migrations
 
                     b.HasKey("ActualOrderId");
 
+                    b.HasIndex("SpeaiclDeliveryDeliveryId");
+
                     b.ToTable("GetActualOrders");
+                });
+
+            modelBuilder.Entity("Models.Orders.DeliveryMethods", b =>
+                {
+                    b.Property<int>("DeliveryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DeliveryTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("DeliveryId");
+
+                    b.ToTable("GetDeliveryMethods");
                 });
 
             modelBuilder.Entity("Models.Orders.OrderedItems", b =>
@@ -492,6 +523,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Models.Orders.ActualOrder", b =>
                 {
+                    b.HasOne("Models.Orders.DeliveryMethods", "SpeaiclDelivery")
+                        .WithMany()
+                        .HasForeignKey("SpeaiclDeliveryDeliveryId");
+
                     b.OwnsOne("Models.Orders.Address", "ShippingAddress", b1 =>
                         {
                             b1.Property<int>("ActualOrderId")
@@ -526,6 +561,8 @@ namespace Data.Migrations
                         });
 
                     b.Navigation("ShippingAddress");
+
+                    b.Navigation("SpeaiclDelivery");
                 });
 
             modelBuilder.Entity("Models.Orders.OrderedItems", b =>
