@@ -12,7 +12,7 @@ namespace Models.DTOS.OrderDTO
         public string Email { get; set; }
         public DateTimeOffset OrderDate { get; set; } 
         public AddressDTO ShippingAddress { get; set; }
-        public string SpeaiclDelivery { get; set; }
+        // public string SpeaiclDelivery { get; set; }
         [Column(TypeName ="decimal(18,2)")]
         public decimal Subtotal { get; set; }
         [Column(TypeName ="decimal(18,2)")]

@@ -27,12 +27,12 @@ namespace Data.ClassesForInterfaces
             StripeConfiguration.ApiKey = _config["Stripe:SecretKey"];
             var Cart = await _shoppingCartRepository.GetCartAsync(CartId);
             if(Cart == null) return null;
-            var shippingPrice = 0m;
-            if(Cart.DeliveryId.HasValue)
-            {
-                var SpecialD = await _unitOfWork.Repository<DeliveryMethods>().Get((int)Cart.DeliveryId);
-                shippingPrice = SpecialD.Price;
-            }
+            // var shippingPrice = 0m;
+            // if(Cart.DeliveryId.HasValue)
+            // {
+            //     var SpecialD = await _unitOfWork.Repository<DeliveryMethods>().Get((int)Cart.DeliveryId);
+            //     shippingPrice = SpecialD.Price;
+            // }
             foreach (var item in Cart.ShoppingCartItems)
             {
                 var obj = await _unitOfWork.Repository<Products>().Get(item.CartItemsId);
@@ -47,7 +47,8 @@ namespace Data.ClassesForInterfaces
             {
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = (long) Cart.ShoppingCartItems.Sum(s => s.Amount * (s.Price * 100)) + (long)shippingPrice * 100,
+                    // Amount = (long) Cart.ShoppingCartItems.Sum(s => s.Amount * (s.Price * 100)) + (long)shippingPrice * 100,
+                    Amount = (long) Cart.ShoppingCartItems.Sum(s => s.Amount * (s.Price * 100)),
                     Currency = "usd",
                     PaymentMethodTypes = new List<string>{"card"} 
                 };
@@ -59,7 +60,8 @@ namespace Data.ClassesForInterfaces
             {
                 var options = new PaymentIntentUpdateOptions
                 {
-                    Amount = (long) Cart.ShoppingCartItems.Sum(s => s.Amount * (s.Price * 100)) + (long)shippingPrice * 100,
+                    Amount = (long) Cart.ShoppingCartItems.Sum(s => s.Amount * (s.Price * 100)),
+                    // Amount = (long) Cart.ShoppingCartItems.Sum(s => s.Amount * (s.Price * 100)) + (long)shippingPrice * 100,
                 };
                 await service.UpdateAsync(Cart.PaymentID,options);
             }
