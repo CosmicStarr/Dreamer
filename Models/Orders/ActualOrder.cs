@@ -41,6 +41,7 @@ namespace Models.Orders
         public string OrderStatus { get; set; } 
         public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
         public string PaymentId { get; set; }
+
         public decimal GetTotal()
         {
             return Subtotal;

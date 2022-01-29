@@ -73,7 +73,6 @@ namespace NormStarr.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<RegisterDTO>> Register([FromBody]RegisterModel registerDTO)
         {
-         
             if (await UserExist(registerDTO.Email)) return BadRequest("Email already exist!");
             var mappedUser = _mapper.Map<RegisterModel, RegisterDTO>(registerDTO);
             var User = await _appRepo.SignUp(mappedUser);

@@ -22,6 +22,7 @@ namespace Models.Orders
             Price = price;
             Amount = amount;
             PhotoUrl = photoUrl;
+
         }
 
         [Key]

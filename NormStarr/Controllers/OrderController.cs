@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Interfaces;
+using Data.Pager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace NormStarr.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<ActualOrderDTO>> GetOrderAsync(int Id)
         {
+            //I removed the Special delivery properties
             var Email = HttpContext.User.RetrieveUserEmail();
             var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,ShippingAddress");
             // var SingleObj = await _unitOfWork.Repository<ActualOrder>().GetFirstOrDefault(x =>x.ActualOrderId == Id,"OrderedItems,SpeaiclDelivery,ShippingAddress");
@@ -44,9 +46,10 @@ namespace NormStarr.Controllers
         
      
         [HttpGet("User")]
-        [Authorize]
+        // [Authorize]
         public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetActualOrders()
         {
+             //I removed the Special delivery properties
             var Email = HttpContext.User.RetrieveUserEmail();
             // var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.Email == Email,x =>x.OrderByDescending(x =>x.OrderDate)
             // ,"OrderedItems,SpeaiclDelivery,ShippingAddress");
@@ -55,11 +58,60 @@ namespace NormStarr.Controllers
             return Ok(_mapper.Map<IEnumerable<ActualOrder>,IEnumerable<ActualOrderDTO>>(Orders));
         }
 
+        [HttpGet("OrderSort")]
+        public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetActualOrdersWithinTimeframe([FromQuery]PageParams pageParams,string Search)
+        {
+            var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderDate >= DateTimeOffset.Now.AddDays(-30),x=>x.OrderByDescending(x=>x.OrderDate),"OrderedItems,ShippingAddress");
+            if(!string.IsNullOrEmpty(pageParams.Sort))
+            {
+                switch (pageParams.Sort)
+                {
+                    case "order3M": Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderDate >= DateTimeOffset.Now.AddDays(-90),x=>x.OrderByDescending(x=>x.OrderDate),"OrderedItems,ShippingAddress");
+                    break;
+                    case "order6M": Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderDate >= DateTimeOffset.Now.AddDays(-180),x=>x.OrderByDescending(x=>x.OrderDate),"OrderedItems,ShippingAddress");
+                    break;
+                    default: Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderDate >= DateTimeOffset.Now.AddDays(-30),x=>x.OrderByDescending(x=>x.OrderDate),"OrderedItems,ShippingAddress"); break;
+                }
+            }
+            if(!string.IsNullOrEmpty(Search))
+            {
+                Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderedItems.Any(x=>x.ProductName.ToLower().Contains(Search)),x=>x.OrderByDescending(x=>x.OrderDate > DateTimeOffset.Now.AddDays(-30)));
+                if(pageParams.Sort != null)
+                {
+                    switch (pageParams.Sort)
+                    {
+                        case "order3M": await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderedItems.Any(x=>x.ProductName.ToLower().Contains(Search)),x=>x.OrderByDescending(x=>x.OrderDate > DateTimeOffset.Now.AddDays(-90)));
+                        break;
+                        case "order6M":await _unitOfWork.Repository<ActualOrder>().GetAll(x =>x.OrderedItems.Any(x=>x.ProductName.ToLower().Contains(Search)),x=>x.OrderByDescending(x=>x.OrderDate > DateTimeOffset.Now.AddDays(-180)));
+                        break;
+                    }
+                }
+                
+            } 
+            return Ok(_mapper.Map<IEnumerable<ActualOrder>,IEnumerable<ActualOrderDTO>>(Orders));
+        }
+
+        [HttpGet("OrderedProducts")]
+        public async Task<ActionResult<IEnumerable<OrderedItems>>> GetListOfOrderedProducts(string Search)
+        {
+            var objItems = await _unitOfWork.Repository<Products>().GetAll(x =>x.Name.ToLower().Contains(Search),null,null);
+            var objList = new List<OrderedItems>();
+            if(!string.IsNullOrEmpty(Search))
+            {
+                foreach (var item in objItems)
+                {
+                    var items = await _unitOfWork.Repository<OrderedItems>().GetFirstOrDefault(x =>x.ProductName == item.Name);
+                    objList.Add(items);
+                }
+            }
+            return Ok(_mapper.Map<IEnumerable<OrderedItems>,IEnumerable<OrderedItemsDTO>>(objList));
+        }
+
         [HttpGet]
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         public async Task<ActionResult<IEnumerable<ActualOrderDTO>>> GetAllOrdersAsync()
         {
-            var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x=>x.OrderStatus == StaticContent.StaticInfo.StatusSubmitted || x.OrderStatus == StaticContent.StaticInfo.StatusinProcess,x =>x.OrderByDescending(x =>x.OrderDate)
+            var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(null,x =>x.OrderByDescending(x =>x.OrderDate)
             ,"OrderedItems,ShippingAddress");
             // var Orders = await _unitOfWork.Repository<ActualOrder>().GetAll(x=>x.OrderStatus == StaticContent.StaticInfo.StatusSubmitted || x.OrderStatus == StaticContent.StaticInfo.StatusinProcess,x =>x.OrderByDescending(x =>x.OrderDate)
             // ,"OrderedItems,SpeaiclDelivery,ShippingAddress");
@@ -99,6 +151,7 @@ namespace NormStarr.Controllers
             var Email = HttpContext.User.RetrieveUserEmail();
             var Address = _mapper.Map<UserAddressDTO, Address>(orderDTO.ShiptoAddress);
             var Order = await _order.CreateOrderAsync(Email, orderDTO.CartId,Address);
+            // Order.OrderTimeSpan = Order.OrderDate.UtcTicks - DateTime.Now.Second;
             if (Order == null) return BadRequest(new ApiErrorResponse(400, "Problem Creating Order!"));
             return Ok(Order);
         }

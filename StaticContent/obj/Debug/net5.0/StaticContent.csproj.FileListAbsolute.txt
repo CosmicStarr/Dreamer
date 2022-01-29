@@ -10,3 +10,6 @@ C:\Users\admin\Dreamer\StaticContent\obj\Debug\net5.0\StaticContent.csproj.CoreC
 C:\Users\admin\Dreamer\StaticContent\obj\Debug\net5.0\StaticContent.dll
 C:\Users\admin\Dreamer\StaticContent\obj\Debug\net5.0\ref\StaticContent.dll
 C:\Users\admin\Dreamer\StaticContent\obj\Debug\net5.0\StaticContent.pdb
+C:\Users\admin\Dreamer\StaticContent\bin\Debug\net5.0\StaticContent.runtimeconfig.json
+C:\Users\admin\Dreamer\StaticContent\bin\Debug\net5.0\StaticContent.runtimeconfig.dev.json
+C:\Users\admin\Dreamer\StaticContent\obj\Debug\net5.0\StaticContent.genruntimeconfig.cache

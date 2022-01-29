@@ -26,7 +26,7 @@ namespace NormStarr.Controllers
             _unitOfWork = unitOfWork;
             
         }
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpPost("CreateCategory")]
         public async Task<ActionResult<CategoryDTO>> CreateCategory([FromBody]Category category)
         {
@@ -44,7 +44,7 @@ namespace NormStarr.Controllers
             return Ok(mappedProduct);
         }
 
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpPost("CreateBrand")]
         public async Task<ActionResult<BrandDTO>> CreateBrand(Brand brand)
         {
@@ -62,7 +62,7 @@ namespace NormStarr.Controllers
             return Ok(mappedProduct);
         }
       
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpPost("CreateProduct")]
         public async Task<ActionResult<Products>> CreateProducts([FromBody]PostProductsDTO products)
         {
@@ -91,7 +91,7 @@ namespace NormStarr.Controllers
             return Ok(mapProduct);
         }
 
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpPut("UpdateProduct/{Id}", Name="GetProduct" )]
         public async Task<ActionResult<Products>> UpdateProduct([FromRoute]int Id, [FromBody]PostProductsDTO products)
         {   
@@ -114,7 +114,7 @@ namespace NormStarr.Controllers
             return Ok( _mapper.Map<Products,PostProductsDTO>(mapProduct));
         }
 
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpDelete("DeleteProduct/{Id}")]
         public async Task DeleteProduct(int Id)
         {
@@ -138,7 +138,7 @@ namespace NormStarr.Controllers
         }
 
 
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpDelete("Delete-Photo/{Id}")]
         public async Task<ActionResult> DeletePhoto(int Id)
         {
@@ -161,7 +161,7 @@ namespace NormStarr.Controllers
         }
 
 
-        [Authorize(policy:"AdminManage")]
+        // [Authorize(policy:"AdminManage")]
         [HttpPost("Add-Photo/{Id}")]
         public async Task<ActionResult<PhotosDTO>> CreatePhotos(int? Id, IFormFile file)
         {

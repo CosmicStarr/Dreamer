@@ -33,10 +33,10 @@ namespace NormStarr
             services.AppService(Configuration);
             services.AddControllers();
   
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "NormStarr", Version = "v1" });
-            });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "NormStarr", Version = "v1" });
+            // });
             services.AddCors(options =>
             {
                 options.AddPolicy("CosmicDesigns", policy =>
@@ -55,20 +55,22 @@ namespace NormStarr
             if (env.IsDevelopment())
             {
                
-                // app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NormStarr v1"));
+                app.UseDeveloperExceptionPage();
+                // app.UseSwagger();
+                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NormStarr v1"));
             }
             app.UseHttpsRedirection();
             app.UseRouting(); 
-            app.UseStaticFiles();
             app.UseCors("CosmicDesigns");
             data.Initialize();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
+            app.UseStaticFiles();
+            app.UseDefaultFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("index","FallBack");
             });
         }
     }

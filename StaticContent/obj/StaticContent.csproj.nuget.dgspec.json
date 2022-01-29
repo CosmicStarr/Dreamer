@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj": {}
+    "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj": {
+    "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
         "projectName": "StaticContent",
-        "projectPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
+        "projectPath": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\obj\\",
+        "outputPath": "C:\\Users\\admin\\dreamer\\StaticContent\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -44,6 +44,14 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.10, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

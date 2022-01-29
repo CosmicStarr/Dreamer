@@ -21,9 +21,9 @@ namespace Models
         [Key]
         public string ShopId { get; set; }
         public List<CartItems> ShoppingCartItems { get; set; } = new();
-        public int? DeliveryId { get; set; }
-        [Column(TypeName ="decimal (18,2)")]
-        public decimal DeliveryPrice { get; set; }
+        // public int? DeliveryId { get; set; }
+        // [Column(TypeName ="decimal (18,2)")]
+        // public decimal DeliveryPrice { get; set; }
         public string ClientSecret { get; set; }
         public string PaymentID { get; set; }
 

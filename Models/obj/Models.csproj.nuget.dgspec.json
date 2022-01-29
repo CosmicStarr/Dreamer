@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj": {}
+    "C:\\Users\\admin\\dreamer\\Models\\Models.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj": {
+    "C:\\Users\\admin\\dreamer\\Models\\Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\dreamer\\Models\\Models.csproj",
         "projectName": "Models",
-        "projectPath": "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj",
+        "projectPath": "C:\\Users\\admin\\dreamer\\Models\\Models.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Dreamer\\Models\\obj\\",
+        "outputPath": "C:\\Users\\admin\\dreamer\\Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -50,6 +50,12 @@
               "version": "[2.2.2, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.10, )"
             }
