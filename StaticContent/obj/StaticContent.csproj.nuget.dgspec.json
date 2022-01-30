@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj": {}
+    "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj": {
+    "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
         "projectName": "StaticContent",
-        "projectPath": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
+        "projectPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\dreamer\\StaticContent\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

@@ -65,12 +65,12 @@ namespace NormStarr
             data.Initialize();
             // app.UseAuthentication();
             // app.UseAuthorization();
-            app.UseStaticFiles();
-            app.UseDefaultFiles();
+            // app.UseStaticFiles();
+            // app.UseDefaultFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapFallbackToController("index","FallBack");
+                // endpoints.MapFallbackToController("index","FallBack");
             });
         }
     }

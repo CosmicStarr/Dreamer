@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MuOMPxiWrIVqh6/bm3yw78fFXfEhcwpLxlPlHq7t+IPXkSYvJCo2MDMCijpsLNgco6EtAd4s5Yxh+BqRTKwxyw==",
+  "dgSpecHash": "v8CHz3xcwODVexzPT1vYtM2qx7k+lrGjyKU6poB6JTuR2UAWw0eEFJL9gYb7hpENbOKaf0aw0GVcyrr/WQQSTw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\dreamer\\Models\\Models.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.10\\microsoft.aspnetcore.cryptography.internal.5.0.10.nupkg.sha512",

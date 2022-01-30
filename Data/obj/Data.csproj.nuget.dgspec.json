@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\dreamer\\Data\\Data.csproj": {}
+    "C:\\Users\\admin\\Dreamer\\Data\\Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\dreamer\\Data\\Data.csproj": {
+    "C:\\Users\\admin\\Dreamer\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\dreamer\\Data\\Data.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Dreamer\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "C:\\Users\\admin\\dreamer\\Data\\Data.csproj",
+        "projectPath": "C:\\Users\\admin\\Dreamer\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\dreamer\\Data\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Dreamer\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -33,11 +33,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\admin\\dreamer\\Models\\Models.csproj": {
-                "projectPath": "C:\\Users\\admin\\dreamer\\Models\\Models.csproj"
+              "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj": {
+                "projectPath": "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj"
               },
-              "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj": {
-                "projectPath": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj"
+              "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj": {
+                "projectPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj"
               }
             }
           }
@@ -120,14 +120,14 @@
         }
       }
     },
-    "C:\\Users\\admin\\dreamer\\Models\\Models.csproj": {
+    "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\dreamer\\Models\\Models.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj",
         "projectName": "Models",
-        "projectPath": "C:\\Users\\admin\\dreamer\\Models\\Models.csproj",
+        "projectPath": "C:\\Users\\admin\\Dreamer\\Models\\Models.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\dreamer\\Models\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Dreamer\\Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -195,14 +195,14 @@
         }
       }
     },
-    "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj": {
+    "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
         "projectName": "StaticContent",
-        "projectPath": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
+        "projectPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\dreamer\\StaticContent\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Dreamer\\StaticContent\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

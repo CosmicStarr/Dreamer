@@ -1,0 +1,15 @@
+C:\Users\admin\Dreamer\StaticContent\bin\release\net5.0\StaticContent.deps.json
+C:\Users\admin\Dreamer\StaticContent\bin\release\net5.0\StaticContent.runtimeconfig.json
+C:\Users\admin\Dreamer\StaticContent\bin\release\net5.0\StaticContent.runtimeconfig.dev.json
+C:\Users\admin\Dreamer\StaticContent\bin\release\net5.0\StaticContent.dll
+C:\Users\admin\Dreamer\StaticContent\bin\release\net5.0\ref\StaticContent.dll
+C:\Users\admin\Dreamer\StaticContent\bin\release\net5.0\StaticContent.pdb
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.csproj.AssemblyReference.cache
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.AssemblyInfoInputs.cache
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.AssemblyInfo.cs
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.csproj.CoreCompileInputs.cache
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.dll
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\ref\StaticContent.dll
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.pdb
+C:\Users\admin\Dreamer\StaticContent\obj\release\net5.0\StaticContent.genruntimeconfig.cache

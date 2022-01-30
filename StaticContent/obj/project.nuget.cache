@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lAn8OwBmgSa4+Z5idDBNXHs1XeqC9e+NFSdg/93zXawYnc5rs0SIQoRYwqtsWh2Q7OVry+ANVO/koUTy2DAUGQ==",
+  "dgSpecHash": "O/DqlSxaAjA+p596M6Ck2Dxi9U8W1nn8+4cUs5I6MroCCYzp1owPhu2TqPSSPwMwJ0i67jOiP8bwyqSjldSXDw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\dreamer\\StaticContent\\StaticContent.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Dreamer\\StaticContent\\StaticContent.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
