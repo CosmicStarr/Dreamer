@@ -17,3 +17,4 @@ C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.pdb
 C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.genruntimeconfig.cache
 C:\Users\admin\Dreamer\Data\bin\Debug\net5.0\StaticContent.dll
 C:\Users\admin\Dreamer\Data\bin\Debug\net5.0\StaticContent.pdb
+C:\Users\admin\Dreamer\Data\obj\Debug\net5.0\Data.csproj.CopyComplete

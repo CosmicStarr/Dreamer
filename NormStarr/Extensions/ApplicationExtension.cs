@@ -37,7 +37,7 @@ namespace NormStarr.Extensions
             services.AddAutoMapper(typeof(AutoMapProfiles));
             services.AddDbContext<ApplicationDbContext>(o =>
             {
-                o.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                o.UseSqlServer(config.GetConnectionString("AzureConnection"));
             });
             services.AddSingleton<IConnectionMultiplexer>(r =>
             {

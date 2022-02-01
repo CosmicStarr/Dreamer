@@ -44,7 +44,7 @@ namespace Data.ClassesForInterfaces
 
             _user.CreateAsync(new AppUser
            {
-                UserName = "Normanj85@yahoo.com",
+                UserName = "Normanj85",
                 Email = "Normanj85@yahoo.com",
                 EmailConfirmed = true,
                 FirstName = "Normand",
