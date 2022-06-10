@@ -13,7 +13,7 @@ namespace NormStarr.Controllers
     public class PaymentController : BaseController
     {
         private readonly IPaymentService _paymentService;
-        private const string whSecret = "whsec_YuAqRoFjWbEFBv4vkaXltm2KzxCDhkDQ";
+        private const string whSecret = ""
         private readonly ILogger<PaymentController> _logger;
         public PaymentController(IPaymentService paymentService, ILogger<PaymentController> logger)
         {
