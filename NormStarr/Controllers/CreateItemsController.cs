@@ -168,7 +168,7 @@ namespace NormStarr.Controllers
             var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.productId == Id,"Category,Brand,Photos");
             //results are coming from cloudinary!
             var results = await _photoServices.AddPhotoAsync(file);
-            if(results.Error != null) return BadRequest(new ApiErrorResponse(400));
+            if(results.Error == null) return BadRequest(new ApiErrorResponse(400));
             var photo = new Photos
             {
                 Products = obj,

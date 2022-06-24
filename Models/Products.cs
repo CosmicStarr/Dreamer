@@ -22,5 +22,6 @@ namespace Models
         public Category Category { get; set; }
         public Brand Brand { get; set; }
         public Photos Photos { get; set; } 
+        public int ratings { get; set; }
     }
 }

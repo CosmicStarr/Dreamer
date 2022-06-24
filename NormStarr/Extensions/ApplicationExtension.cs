@@ -30,14 +30,14 @@ namespace NormStarr.Extensions
             services.AddScoped<IOrderRepository,OrderServices>();
             services.AddScoped<IShoppingCartRepository,ShoppingCartRepository>();
             services.AddSingleton<IMailJetEmailSender,MailJetSender>();
-            services.AddScoped<ITokenService,TokenService>();
+            services.AddTransient<ITokenService,TokenService>();
             services.AddScoped<IApplicationUserRepo,ApplicationUserRepo>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             
             services.AddAutoMapper(typeof(AutoMapProfiles));
             services.AddDbContext<ApplicationDbContext>(o =>
             {
-                o.UseSqlServer(config.GetConnectionString("AzureConnection"));
+                o.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
             services.AddSingleton<IConnectionMultiplexer>(r =>
             {
@@ -63,10 +63,10 @@ namespace NormStarr.Extensions
                 {
                     ValidateAudience = true,
                     ValidateIssuer = true,
+                    ValidateLifetime = true,
                     ValidAudience = config["JWT:VaildAudience"],
                     ValidIssuer = config["JWT:VaildIssuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:SecretKey"]))
-
                 };
             });
             services.Configure<ApiBehaviorOptions>(o =>

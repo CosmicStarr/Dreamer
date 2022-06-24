@@ -38,20 +38,6 @@ namespace NormStarr.Controllers
 
         }
 
-        // [HttpGet]
-        // public async Task<ActionResult<LoginDTO>> CurrentLoginUser()
-        // {
-        //     var user = await _userManager.RetrieveEmail(HttpContext.User);
-        //     var role = await _userManager.GetRolesAsync(user);
-        //     IList<Claim> Claim = await _userManager.GetClaimsAsync(user); 
-        //     var newUser = new LoginDTO
-        //     {
-        //         Email = user.Email,
-        //         token =  _token.Token(user,role,Claim)
-        //     };
-        //     return Ok(newUser);
-        // }
-
         [HttpPost("ForgotPassword")]
         public async Task<ActionResult<ForgotPasswordDTO>> ForgotPasswordAsync([FromBody]ForgotPasswordDTO appUserDTO)
         {

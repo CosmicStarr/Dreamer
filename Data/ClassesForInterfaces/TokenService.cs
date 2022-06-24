@@ -42,7 +42,7 @@ namespace Data.ClassesForInterfaces
             var token = new JwtSecurityToken(
                     issuer: _config["JWT:VaildIssuer"],
                     audience: _config["JWT:VaildAudience"],
-                    expires: DateTime.UtcNow.AddDays(1),
+                    expires: DateTime.UtcNow.AddDays(30),
                     claims: claims,
                     signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha512Signature)
                 );

@@ -15,5 +15,6 @@ namespace Models.DTOS
         public string CategoryDTO { get; set; }
         public string BrandDTO { get; set; }
         public string photosDTO { get; set; }
+        public int ratings {get; set;} = 0;
     }
 }

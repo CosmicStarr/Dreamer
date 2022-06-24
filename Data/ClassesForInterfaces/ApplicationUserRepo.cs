@@ -116,7 +116,6 @@ namespace Data.ClassesForInterfaces
             {
                 var user = await _userManager.FindByEmailAsync(NewUser.Email);
                 var Token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
                 var UriQuerybuilder = new UriBuilder(_configuration["ReturnPath:confirmEmail"]);
                 var uriQuery = HttpUtility.ParseQueryString(UriQuerybuilder.Query);
                 uriQuery["token"] = Token;

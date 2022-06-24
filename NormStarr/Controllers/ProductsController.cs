@@ -136,5 +136,17 @@ namespace NormStarr.Controllers
             var mappedObj = _mapper.Map<IEnumerable<Category>,IEnumerable<CategoryDTO>>(obj);
             return Ok(mappedObj);
         }
+
+        [HttpPost("ratings/{Id}")]
+        public async Task<ActionResult> PostRatingAsync(int Id,[FromBody]int rating)
+        {
+            var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x =>x.productId == Id);
+            if(obj != null)
+            {
+                obj.ratings = rating + obj.ratings;    
+            }
+            await _unitOfWork.Complete();
+            return Ok(obj);
+        }
     }
 }
