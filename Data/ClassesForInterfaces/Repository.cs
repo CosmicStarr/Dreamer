@@ -89,8 +89,6 @@ namespace Data.ClassesForInterfaces
             return await query.FirstOrDefaultAsync();
         }
 
-
-
         public void Remove(T entity)
         {
             dbSet.Remove(entity);

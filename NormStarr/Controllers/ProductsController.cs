@@ -42,6 +42,7 @@ namespace NormStarr.Controllers
         public async Task<ActionResult<ProductsDTO>> GetProductAsync(int Id)
         {
             var obj = await _unitOfWork.Repository<Products>().GetFirstOrDefault(x => x.productId == Id,"Category,Brand,Photos");
+            // var prodInfo = await _unitOfWork.Repository<Products>().ExistOrNot(obj => obj.IsOnSale == false);
             var mappedObj = _mapper.Map<Products,ProductsDTO>(obj);
             return Ok(mappedObj);
         }
@@ -51,6 +52,7 @@ namespace NormStarr.Controllers
         public async Task<ActionResult<IEnumerable<ProductsDTO>>> GetProductsAsync([FromQuery]PageParams Param,string Search)
         {  
             var Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,null,x=>x.OrderBy(x =>x.Name),"Category,Brand,Photos");
+            
             if(!string.IsNullOrEmpty(Param.Sort))
             {
                 switch (Param.Sort)
@@ -63,13 +65,13 @@ namespace NormStarr.Controllers
                 }
             }
             if(!string.IsNullOrEmpty(Search))
-            {
-                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Name.ToLower().Contains(Search),x=>x.OrderBy(x =>x.Name),"Category,Brand,Photos");
+            {   
+                Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x=>x.Name.ToLower().Contains(Search),x=>x.OrderBy(x =>x.Category.Name),"Category,Brand,Photos");
                 switch (Param.Sort)
                 {
-                    case "priceAsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Name.ToLower().Contains(Search),x=>x.OrderBy(x =>x.Price),"Category,Brand,Photos");
+                    case "priceAsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x => x.Name.ToLower().Contains(Search),x=>x.OrderBy(x =>x.Price),"Category,Brand,Photos");
                     break;
-                    case "priceDsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x =>x.Name.ToLower().Contains(Search),x=>x.OrderByDescending(x =>x.Price),"Category,Brand,Photos");
+                    case "priceDsc": Data = await _unitOfWork.Repository<Products>().GetAllParams(Param,x => x.Name.ToLower().Contains(Search),x=>x.OrderByDescending(x =>x.Price),"Category,Brand,Photos");
                     break;
                 }
             }
@@ -106,6 +108,7 @@ namespace NormStarr.Controllers
                     break;
                 }
             }
+            
             //PageSize is the amout of items per page!
             Response.AddPaginationHeader(Data.CurrentPage,Data.PageSize,Data.TotalCount,Data.TotalPages);
             var newData = _mapper.Map<PagerList<Products>,PagerList<ProductsDTO>>(Data);
